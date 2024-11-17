@@ -9,7 +9,7 @@ const Player = () => {
   const { track, playStatus, play, pause, time, previous, next } = useContext(PlayerContext)
 
   return track ? (
-    <div className='h-[10%] bg-black flex justify-between item-center text-white px-4'>
+    <div className='lg:col-span-3 h-[72px] bg-black flex justify-between item-center text-white px-4'>
       <div className='hidden lg:flex items-center gap-4'>
         <img className='w-12' src={track.image} alt=''/>
         <div>

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import Navbar from './Navbar'
+import DisplayNavbar from './DisplayNavbar'
 import { useParams } from 'react-router-dom'
 import { images } from '../assets/assets'
 import { PlayerContext } from '../context/PlayerContext'
@@ -20,7 +20,7 @@ const DisplayAlbum = ({album}) => {
 
   return albumData ? (
     <>
-     <Navbar />
+     <DisplayNavbar />
      <div className='mt-10 flex gap-8 flex-col md:flex-row md:items-end'>
       <img className='w-48 rounded' src={albumData.image} alt=''/>
       <div className='flex flex-col'>
