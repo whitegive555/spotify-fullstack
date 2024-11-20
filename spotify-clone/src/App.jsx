@@ -18,7 +18,7 @@ const App = () => {
           <Navbar />
           <Sidebar />
           <Display />
-          <div className='lg:col-span-1 w-[280px] bg-[#121212] rounded hidden lg:flex'></div>
+          <div className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg hidden lg:flex'></div>
           <Player />
         </div>
         : null

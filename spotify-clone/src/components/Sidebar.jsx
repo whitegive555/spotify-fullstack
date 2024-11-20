@@ -1,45 +1,66 @@
 import React from 'react'
 import {images} from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import punisher from '../assets/Punisher.jpg'
+import _25 from '../assets/25.jpg'
+import nfr from '../assets/Norman Fucking Rockwell.jpg'
 
 const Sidebar = () => {
   const navigate = useNavigate()
 
   return (
-    <div className='lg:col-span-1 w-[280px] flex-col overflow-auto gap-2 text-white hidden lg:flex'>
-      <div className='bg-[#121212] h-[15%] rounded flex flex-col justify-around'>
-        <div onClick={() => navigate('/')} className='flex items-ceneter gap-3 pl-8 cursor-pointer'>
-          <img className='w-6' src={images.home_icon} alt='' />
-          <p className='font-bold'>Home</p>
+    <nav className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden lg:flex'>
+      <div className='pt-1 px-2'>
+        <div className='flex gap-2 justify-start items-center'>
+          <div className='h-[40px] w-[168px] px-2 py-1 flex justify-start items-center gap-3 text-[#b3b3b3] font-bold'>
+            <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="w-6 fill-[#b3b3b3]"><path d="M3 22a1 1 0 0 1-1-1V3a1 1 0 0 1 2 0v18a1 1 0 0 1-1 1zM15.5 2.134A1 1 0 0 0 14 3v18a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V6.464a1 1 0 0 0-.5-.866l-6-3.464zM9 2a1 1 0 0 0-1 1v18a1 1 0 1 0 2 0V3a1 1 0 0 0-1-1z"></path></svg>
+            Your Library
+          </div>
+          <button className='h-8 w-8 flex justify-center items-center'>
+            <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="w-4 fill-[#b3b3b3]"><path d="M15.25 8a.75.75 0 0 1-.75.75H8.75v5.75a.75.75 0 0 1-1.5 0V8.75H1.5a.75.75 0 0 1 0-1.5h5.75V1.5a.75.75 0 0 1 1.5 0v5.75h5.75a.75.75 0 0 1 .75.75z"></path></svg>
+          </button>
+          <button className='h-8 w-8 flex justify-center items-center'>
+            <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="w-4 fill-[#b3b3b3]"><path d="M7.19 1A.749.749 0 0 1 8.47.47L16 7.99l-7.53 7.521a.75.75 0 0 1-1.234-.815.75.75 0 0 1 .174-.243l5.72-5.714H.75a.75.75 0 1 1 0-1.498h12.38L7.41 1.529a.749.749 0 0 1-.22-.53z"></path></svg>
+          </button>
         </div>
-        <div className='flex items-ceneter gap-3 pl-8 cursor-pointer'>
-          <img className='w-6' src={images.search_icon} alt='' />
-          <p className='font-bold'>Search</p>
+        <div className='pt-4 flex gap-2 justify-start items-center'>
+          <button className='h-8 px-3 py-1 bg-[#2a2a2a] text-sm text-white rounded-full'>Playlists</button>
+          <button className='h-8 px-3 py-1 bg-[#2a2a2a] text-sm text-white rounded-full'>Artists</button>
+        </div>
+        <div className='h-[42px] pt-[10px] -mr-1 flex justify-between items-center'>
+          <button className='h-8 w-8 flex justify-center items-center'>
+            <svg data-encore-id="icon" role="img" aria-hidden="true" className="w-4 fill-[#b3b3b3]" viewBox="0 0 16 16"><path d="M7 1.75a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5zM.25 7a6.75 6.75 0 1 1 12.096 4.12l3.184 3.185a.75.75 0 1 1-1.06 1.06L11.304 12.2A6.75 6.75 0 0 1 .25 7z"></path></svg>
+          </button>
+          <button className='pl-4 py-1 pr-3 flex justify-between items-center gap-[5px] text-sm text-[#b3b3b3]'>
+            Recents
+            <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="w-4 fill-[#b3b3b3]"><path d="M15 14.5H5V13h10v1.5zm0-5.75H5v-1.5h10v1.5zM15 3H5V1.5h10V3zM3 3H1V1.5h2V3zm0 11.5H1V13h2v1.5zm0-5.75H1v-1.5h2v1.5z"></path></svg>
+          </button>
         </div>
       </div>
-      <div className='bg[#121212] h-[85%] rounded'>
-        <div className='p-4 flex items-center justify-between'>
-          <div className='flex items-center gap-3'>
-            <img className='w-8' src={images.stack_icon} alt=''/>
-            <p className='font-semibold'>Your Library</p>
+      <div className='flex flex-col justify-between items-center gap-4 p-2'>
+        <li className='h-12 w-full flex justify-start items-center gap-3'>
+          <img src={punisher} className='h-12 w-12 rounded-md' alt=''/>
+          <div className='w-[188px] h-12'>
+            <p className='text-white overflow-ellipsis text-nowrap'>Punihser</p>
+            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
           </div>
-          <div className='flex items-center gap-3'>
-            <img className='w-5' src={images.arrow_icon} alt=''/>
-            <img className='w-5' src={images.plus_icon} alt=''/>
+        </li>
+        <li className='h-12 w-full flex justify-start items-center gap-3'>
+          <img src={_25} className='h-12 w-12 rounded-md' alt=''/>
+          <div className='w-[188px] h-12'>
+            <p className='text-white overflow-ellipsis text-nowrap'>25</p>
+            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
           </div>
-        </div>
-        <div className='p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4'>
-          <h1>Create your first playlist</h1>
-          <p className='font-light'>it's easy we will help you</p>
-          <button className='px-4 py-1.5 bg-white text-[15px] text-black rounded-full mt-4'>Create Playlist</button>
-        </div>
-        <div className='p-4 bg-[#242424] m-2 rounded font-semibold flex flex-col items-start justify-start gap-1 pl-4 mt-4'>
-          <h1>Let's find some podcasts to follow</h1>
-          <p className='font-light'>we'll keep you update on new eqisodes</p>
-          <button className='px-4 py-1.5 bg-white text-[15px] text-black rounded-full mt-4'>Browse podcasts</button>
-        </div>
+        </li>
+        <li className='h-12 w-full flex justify-start items-center gap-3'>
+          <img src={nfr} className='h-12 w-12 rounded-md' alt=''/>
+          <div className='w-[188px] h-12'>
+            <p className='text-white overflow-ellipsis text-nowrap'>Norman Fucking Rockwell!</p>
+            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
+          </div>
+        </li>
       </div>
-    </div>
+    </nav>
   )
 }
 

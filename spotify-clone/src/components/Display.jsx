@@ -24,7 +24,7 @@ const Display = () => {
   })
 
   return (
-    <div ref={displayRef} className='col-span-1 overflow-auto px-6 pt-4 rounded bg-[#121212] text-white'>
+    <div ref={displayRef} className='col-span-1 overflow-auto px-6 pt-4 rounded-lg bg-[#121212] text-white'>
       {
         albumsData.length > 0 ?
         <Routes>
