@@ -6,12 +6,15 @@ export const PlayerContext = createContext()
 
 const PlayerContextProvider = (props) => {
   const audioRef = useRef()
-  // const seekBg = useRef()
-  // const seekBar = useRef()
-  const sliderRef = useRef()
+  const seekSliderRef = useRef()
+  const seekProgressRef = useRef()
+  const volumeSliderRef = useRef()
+  const volumeProgressRef = useRef()
   const [progress, setProgress] = useState(0)
-  let isSeeking = useRef(false)
-
+  const [volume, setVolume] = useState(0)
+  
+  let isSeekingProgress = useRef(false)
+  let isSeekingVolume = useRef(false)
   const url = 'http://localhost:4000'
 
   const [songsData, setSongsData] = useState([])
@@ -40,9 +43,6 @@ const PlayerContextProvider = (props) => {
   }
 
   const playWithId = async (id) => {
-    // await setTrack(songsData[id])
-    // await audioRef.current.play()
-    // setPlayStatus(true)
     await songsData.map((item) => {
       if (id == item._id) {
         setTrack(item)
@@ -53,11 +53,6 @@ const PlayerContextProvider = (props) => {
   }
 
   const previous = async () => {
-    // if(track.id > 0) {
-    //   await setTrack(songsData[track.id-1])
-    //   await audioRef.current.play()
-    //   setPlayStatus(true)
-    // }
     songsData.map(async (item, index) => {
       if (track._id == item._id && index > 0) {
         await setTrack(songsData[index-1])
@@ -68,11 +63,6 @@ const PlayerContextProvider = (props) => {
   }
   
   const next = async () => {
-    // if(track.id < songsData.length+1) {
-    //   await setTrack(songsData[track.id+1])
-    //   await audioRef.current.play()
-    //   setPlayStatus(true)
-    // }
     songsData.map(async (item, index) => {
       if (track._id == item._id && index < songsData.length + 1) {
         await setTrack(songsData[index+1])
@@ -82,17 +72,25 @@ const PlayerContextProvider = (props) => {
     })
   }
 
-  const handleMouseDown = () => {
-    isSeeking.current = true
-    document.addEventListener('mouseup', handleMouseUp)
+  const seekMouseEnter = () => {
+    seekProgressRef.current.style.backgroundColor = '#1db954'
+  }
+  
+  const seekMouseLeave = () => {
+    seekProgressRef.current.style.backgroundColor = 'white'
   }
 
-  const handleChange = () => {
-    setProgress(sliderRef.current.value / sliderRef.current.max)
+  const seekMouseDown = () => {
+    isSeekingProgress.current = true
+    document.addEventListener('mouseup', seekMouseUp)
+  }
+
+  const seekChange = () => {
+    setProgress(seekSliderRef.current.value / seekSliderRef.current.max)
     setTime({
       currentTime: {
-        second: Math.floor((audioRef.current.duration * sliderRef.current.value / sliderRef.current.max ) % 60),
-        minute: Math.floor((audioRef.current.duration * sliderRef.current.value / sliderRef.current.max ) / 60)
+        second: Math.floor((audioRef.current.duration * seekSliderRef.current.value / seekSliderRef.current.max ) % 60),
+        minute: Math.floor((audioRef.current.duration * seekSliderRef.current.value / seekSliderRef.current.max ) / 60)
       },
       totalTime: {
         second: Math.floor(audioRef.current.duration % 60),
@@ -101,10 +99,10 @@ const PlayerContextProvider = (props) => {
     })
   }
 
-  const handleMouseUp = () => {
-    document.removeEventListener('mouseup', handleMouseUp)
-    audioRef.current.currentTime = sliderRef.current.value / sliderRef.current.max * audioRef.current.duration
-    isSeeking.current = false
+  const seekMouseUp = () => {
+    document.removeEventListener('mouseup', seekMouseUp)
+    audioRef.current.currentTime = seekSliderRef.current.value / seekSliderRef.current.max * audioRef.current.duration
+    isSeekingProgress.current = false
   }
 
   const getSongsData = async () => {
@@ -135,10 +133,9 @@ const PlayerContextProvider = (props) => {
   useEffect(() => {
     setTimeout(() => {      
       audioRef.current.ontimeupdate = () => {
-        // seekBar.current.style.width = (Math.floor(audioRef.current.currentTime / audioRef.current.duration * 100)) + '%'
-        if (isSeeking.current) return
+        if (isSeekingProgress.current) return
         setProgress(audioRef.current.currentTime / audioRef.current.duration)
-        sliderRef.current.value = Math.round(audioRef.current.currentTime / audioRef.current.duration * sliderRef.current.max)
+        seekSliderRef.current.value = Math.round(audioRef.current.currentTime / audioRef.current.duration * seekSliderRef.current.max)
         setTime({
           currentTime: {
             second: Math.floor(audioRef.current.currentTime % 60),
@@ -156,26 +153,30 @@ const PlayerContextProvider = (props) => {
   useEffect(() => {
     getSongsData()
     getAlbumsData()
+    audioRef.current.volume = 0
   }, [])
 
-  // const contextValue = {
-  //   audioRef,
-  //   seekBg,
-  //   seekBar,
-  //   track, setTrack,
-  //   playStatus, setPlayStatus,
-  //   time, setTime,
-  //   play, pause,
-  //   playWithId,
-  //   previous, next,
-  //   seekSong,
-  //   songsData, albumsData
-  // }
+  const volumeMouseEnter = () => {
+    volumeProgressRef.current.style.backgroundColor = '#1db954'
+  }
+  
+  const volumeMouseLeave = () => {
+    volumeProgressRef.current.style.backgroundColor = 'white'
+  }
+
+  const volumeChange = () => {
+    setVolume(volumeSliderRef.current.value / volumeSliderRef.current.max)
+    audioRef.current.volume = volumeSliderRef.current.value / volumeSliderRef.current.max
+  }
+
   const contextValue = {
     audioRef,
+    seekSliderRef, seekProgressRef,
     progress, setProgress,
-    sliderRef,
-    handleMouseDown, handleChange,
+    seekMouseDown, seekChange, seekMouseEnter, seekMouseLeave,
+    volumeSliderRef, volumeProgressRef,
+    volume, setVolume,
+    volumeChange, volumeMouseEnter, volumeMouseLeave,
     track, setTrack,
     playStatus, setPlayStatus,
     time, setTime,
