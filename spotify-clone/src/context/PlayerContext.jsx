@@ -17,6 +17,9 @@ const PlayerContextProvider = (props) => {
   let isSeekingVolume = useRef(false)
   const url = 'http://localhost:4000'
 
+  const [playlistData, setPlaylistData] = useState([])
+  const [artistData, setArtistData] = useState([])
+  const [queueData, setQueueData] = useState([])
   const [songsData, setSongsData] = useState([])
   const [albumsData, setAlbumsData] = useState([])
   const [track, setTrack] = useState(songsData[0])
@@ -105,6 +108,20 @@ const PlayerContextProvider = (props) => {
     isSeekingProgress.current = false
   }
 
+  const getUserData = async () => {
+    try {
+      const response = await axios.get(`${url}/api/user/list?id=673e7ddacacf869acf1075f5`)
+      if (response.data.success) {
+        setPlaylistData(response.data.user.playlists)
+        setArtistData(response.data.user.artists)
+        setQueueData(response.data.user.queue)
+      }
+    }
+    catch (error) {
+      
+    }
+  }
+
   const getSongsData = async () => {
     try {
       const response = await axios.get(`${url}/api/song/list`)
@@ -151,10 +168,15 @@ const PlayerContextProvider = (props) => {
   }, [audioRef])
 
   useEffect(() => {
+    getUserData()
+    audioRef.current.volume = 0
+  }, [])
+ 
+  useEffect(() => {
     getSongsData()
     getAlbumsData()
     audioRef.current.volume = 0
-  }, [])
+  }, [playlistData])
 
   const volumeMouseEnter = () => {
     volumeProgressRef.current.style.backgroundColor = '#1db954'
@@ -183,7 +205,7 @@ const PlayerContextProvider = (props) => {
     play, pause,
     playWithId,
     previous, next,
-    songsData, albumsData
+    playlistData, artistData, queueData, songsData, albumsData
   }
   return (
     <PlayerContext.Provider value={contextValue}>

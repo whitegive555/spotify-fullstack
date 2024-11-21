@@ -1,12 +1,17 @@
-import React from 'react'
-import {images} from '../assets/assets'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import punisher from '../assets/Punisher.jpg'
-import _25 from '../assets/25.jpg'
-import nfr from '../assets/Norman Fucking Rockwell.jpg'
+import { PlayerContext } from '../context/PlayerContext'
+import { useState } from 'react'
 
 const Sidebar = () => {
-  const navigate = useNavigate()
+  const { playlistData, albumsData } = useContext(PlayerContext)
+  const [playlists, setPlaylists] = useState([])
+  
+
+  useEffect(() => {
+    const playlistSet = new Set(playlistData)
+    setPlaylists(albumsData.filter(item => playlistSet.has(item._id)))
+  }, [])
 
   return (
     <nav className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden lg:flex'>
@@ -38,27 +43,16 @@ const Sidebar = () => {
         </div>
       </div>
       <div className='flex flex-col justify-between items-center gap-4 p-2'>
-        <li className='h-12 w-full flex justify-start items-center gap-3'>
-          <img src={punisher} className='h-12 w-12 rounded-md' alt=''/>
-          <div className='w-[188px] h-12'>
-            <p className='text-white overflow-ellipsis text-nowrap'>Punihser</p>
-            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
-          </div>
-        </li>
-        <li className='h-12 w-full flex justify-start items-center gap-3'>
-          <img src={_25} className='h-12 w-12 rounded-md' alt=''/>
-          <div className='w-[188px] h-12'>
-            <p className='text-white overflow-ellipsis text-nowrap'>25</p>
-            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
-          </div>
-        </li>
-        <li className='h-12 w-full flex justify-start items-center gap-3'>
-          <img src={nfr} className='h-12 w-12 rounded-md' alt=''/>
-          <div className='w-[188px] h-12'>
-            <p className='text-white overflow-ellipsis text-nowrap'>Norman Fucking Rockwell!</p>
-            <p className='text-[#b3b3b3] text-sm'>Playlist &#8226; Spotify</p>
-          </div>
-        </li>
+        {
+          playlists.map((item, index) =>
+          (<li key={index} className='h-12 w-full flex justify-start items-center gap-3'>
+            <img src={item.image} className='h-12 w-12 rounded-md' alt=''/>
+            <div className='w-[188px] h-12'>
+              <p className='text-white overflow-ellipsis text-nowrap'>{item.name}</p>
+              <p className='text-[#b3b3b3] text-sm'>{item.desc}</p>
+            </div>
+          </li>))
+        }
       </div>
     </nav>
   )

@@ -6,7 +6,6 @@ import Volumebar from './Volumebar'
 
 const Player = () => {
 
-  // const { track, seekBar, seekBg, playStatus, play, pause, time, previous, next, seekSong } = useContext(PlayerContext)
   const { track, playStatus, play, pause, time, previous, next } = useContext(PlayerContext)
 
   return track ? (
