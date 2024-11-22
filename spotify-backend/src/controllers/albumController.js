@@ -14,31 +14,39 @@ const addAlbum = async (req, res) => {
     // TODO: auto generate bgColor
     const bgColor = req.body.bgColor
 
-    const songs = []
+    const songIds = []
     const duration = 0
 
     const albumData = {
       title,
       artist,
       year,
+      artworkId: imageUpload.public_id,
       artworkUrl: imageUpload.secure_url,
       bgColor,
-      // response different from schema here
-      songs,
+      songIds,
       duration
     }
 
     const album = albumModel(albumData)
     await album.save()
 
-    res.json({ success: true, album: album })
+    res.json({ success: true, album: {
+      title: album.title,
+      artist: album.artist,
+      year: album.year,
+      artworkUrl: album.artworkUrl,
+      bgColor: album.bgColor,
+      songs: [],
+      duration: album.duration
+    }})
   }
   catch (error) {
     if(imageUpload && imageUpload.public_id) {
-      await cloudinary.uploader.destroy(imageUpload.public_id)
+      await cloudinary.uploader.destroy(imageUpload.public_id, { resource_type: 'image' })
     }
 
-    res.json( { success: false })
+    res.json({ success: false })
   }
 }
 
@@ -52,7 +60,7 @@ const getAlbum = async (req, res) => {
       songs.push(song)
     }
 
-    res.json({ success: true, albums: {
+    res.json({ success: true, album: {
       title: album.title,
       artist: album.artist,
       year: album.year,
@@ -61,6 +69,26 @@ const getAlbum = async (req, res) => {
       songs: songs,
       duration: album.duration
     }})
+  }
+  catch (error) {
+    res.json({ success: false })
+  }
+}
+
+// do not find all songs for each album
+const getAllAlbums = async (req, res) => {
+  try {
+    const allAlbums = await albumModel.find({})
+    const albums = allAlbums.map(item => ({
+      title: item.title,
+      artist: item.artist,
+      year: item.year,
+      artworkUrl: item.artworkUrl,
+      bgColor: item.bgColor,
+      duration: item.duration
+    }))
+
+    res.json({ success: true, albums: albums })
   }
   catch (error) {
     res.json({ success: false })
@@ -101,7 +129,9 @@ const updateAlbum = async (req, res) => {
 
 const deleteAlbum = async (req, res) => {
   try {
-    await albumModel.findByIdAndDelete(req.body.id)
+    const album = await albumModel.findById(req.body.id)
+    await cloudinary.uploader.destroy(album.artworkId, { resource_type: 'image' })
+    await album.deleteOne()
 
     res.json({ success: true })
   }
@@ -110,4 +140,4 @@ const deleteAlbum = async (req, res) => {
   }
 }
 
-export { addAlbum, getAlbum, updateAlbum, deleteAlbum }
+export { addAlbum, getAlbum, getAllAlbums, updateAlbum, deleteAlbum }

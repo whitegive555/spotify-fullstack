@@ -18,22 +18,31 @@ const addSong = async (req, res) => {
     const songData = {
       title,
       artist,
+      artworkId: imageUpload.public_id,
       artworkUrl: imageUpload.secure_url,
+      audioId: audioUpload.public_id,
       audioUrl: audioUpload.secure_url,
       duration
     }
 
     const song = songModel(songData)
     await song.save()
+    console.log(song)
 
-    res.json({ success: true, song: song })
+    res.json({ success: true, song: {
+      title: song.title,
+      artist: song.artist,
+      artworkUrl: song.artworkUrl,
+      audioUrl: song.audioUrl,
+      duration: song.duration
+    }})
   }
   catch (error) {
     if(imageUpload && imageUpload.public_id) {
-      await cloudinary.uploader.destroy(imageUpload.public_id)
+      await cloudinary.uploader.destroy(imageUpload.public_id, { resource_type: 'image' })
     }
     if(audioUpload && audioUpload.public_id) {
-      await cloudinary.uploader.destroy(audioUpload.public_id)
+      await cloudinary.uploader.destroy(audioUpload.public_id, { resource_type: 'video' })
     }
 
     res.json({ success: false })
@@ -43,8 +52,14 @@ const addSong = async (req, res) => {
 const getAllSongs = async (req, res) => {
   try {
     const allSongs = await songModel.find({})
+    const songs = allSongs.map(item => ({
+      title: item.title,
+      artist: item.artist,
+      artworkUrl: item.artworkUrl,
+      duration: item.duration
+    }))
 
-    res.json({ success: true, songs: allSongs })
+    res.json({ success: true, songs: songs })
   }
   catch (error) {
     res.json({ success: false })
@@ -53,7 +68,11 @@ const getAllSongs = async (req, res) => {
 
 const deleteSong = async (req, res) => {
   try {
-    await songModel.findByIdAndDelete(req.body.id)
+    const song = await songModel.findById(req.body.id)
+    console.log(song)
+    await cloudinary.uploader.destroy(song.artworkId, { resource_type: 'image' })
+    await cloudinary.uploader.destroy(song.audioId, { resource_type: 'video' })
+    await song.deleteOne()
 
     res.json({ success: true })
   }
