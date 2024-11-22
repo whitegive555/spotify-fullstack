@@ -1,23 +1,19 @@
 import { v2 as cloudinary } from 'cloudinary'
 import userModel from '../models/userModel.js'
+import songModel from '../models/songModel.js'
 
-const updateUser = async (req, res) => {
+const addUser = async (req, res) => {
   try {
-    const user = await userModel.findById(req.body.id)
-    user.playlists = req.body.playlists
-    user.artists = req.body.artists
-    user.queue = req.body.queue
+    // response different from schema here
+    const userData = {
+      playlistSongIds: [],
+      artistSongIds: [],
+      queueSongIds: []
+    }
+
+    const user = userModel(userData)
     await user.save()
-    res.json( { success: true, message: 'User updated' })
-  }
-  catch (error) {
-    res.json( { success: false })
-  }
-}
 
-const listUser = async (req, res) => {
-  try {
-    const user = await userModel.findById(req.query.id)
     res.json({ success: true, user: user })
   }
   catch (error) {
@@ -25,22 +21,52 @@ const listUser = async (req, res) => {
   }
 }
 
-const addUser = async (req, res) => {
+const getUser = async (req, res) => {
   try {
-    const userData = {
-      playlists: [],
-      artists: [],
-      queue: []
+    const user = await userModel.findById(req.query.id)
+    const playlists = []
+    for(const id of user.playlistSongIds) {
+      // TODO: is there any other way to do this?
+      const song = await songModel.findById(id)
+      playlists.push(song)
     }
 
-    const user = userModel(userData)
+    // response different from schema here
+    res.json({ success: true, user: {
+      playlists: playlists,
+      artists: [],
+      queue: []
+    }})
+  }
+  catch (error) {
+    res.json({ success: false })
+  }
+}
+
+const updateUser = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.body.id)
+    // TODO: will i lose reference if i don't use Array.from here?
+    user.playlistSongIds = Array.from(req.body.playlistSongIds)
+    const playlists = []
+    console.log(user.playlistSongIds)
+    for(const id of user.playlistSongIds) {
+      // TODO: is there any other way to do this?
+      const song = await songModel.findById(id)
+      playlists.push(song)
+    }
+
     await user.save()
 
-    res.json( { success: true, message: 'User added' })
+    res.json({ success: true, user: {
+      playlists: playlists,
+      artists: [],
+      queue: []
+    }})
   }
   catch (error) {
     res.json( { success: false })
   }
 }
 
-export { listUser, addUser, updateUser }
+export { addUser, getUser, updateUser }

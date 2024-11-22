@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-  playlists: { type: Array, required: true },
-  artists: { type: Array, required: true },
-  queue: { type: Array, required: true }
+  playlistSongIds: { type: Array, required: true },
+  artistSongIds: { type: Array, required: true },
+  queueSongIds: { type: Array, required: true }
 })
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema)
