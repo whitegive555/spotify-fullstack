@@ -27,7 +27,6 @@ const addSong = async (req, res) => {
 
     const song = songModel(songData)
     await song.save()
-    console.log(song)
 
     res.json({ success: true, song: {
       id: song.id,
@@ -71,7 +70,7 @@ const getAllSongs = async (req, res) => {
 const deleteSong = async (req, res) => {
   try {
     const song = await songModel.findById(req.body.id)
-    console.log(song)
+    
     await cloudinary.uploader.destroy(song.artworkId, { resource_type: 'image' })
     await cloudinary.uploader.destroy(song.audioId, { resource_type: 'video' })
     await song.deleteOne()

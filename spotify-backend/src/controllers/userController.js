@@ -4,17 +4,24 @@ import songModel from '../models/songModel.js'
 
 const addUser = async (req, res) => {
   try {
-    // response different from schema here
     const userData = {
-      playlistSongIds: [],
-      artistSongIds: [],
-      queueSongIds: []
+      playlists: [],
+      artists: [],
+      recommendations: [],
+      queue: []
     }
-
+    
     const user = userModel(userData)
     await user.save()
-
-    res.json({ success: true, user: user })
+    
+    // response different from schema here
+    res.json({ success: true, user: {
+      id: user.id,
+      playlists: user.playlists,
+      artists: user.artists,
+      recommendations: user.recommendations,
+      queue: user.queue
+    }})
   }
   catch (error) {
     res.json({ success: false })
@@ -25,17 +32,23 @@ const getUser = async (req, res) => {
   try {
     const user = await userModel.findById(req.query.id)
     const playlists = []
-    for(const id of user.playlistSongIds) {
-      // TODO: is there any other way to do this?
-      const song = await songModel.findById(id)
-      playlists.push(song)
+    for(const _playlist of user.playlists) {
+      const playlist = { name: _playlist.name, songs: [] }
+      for(const id of _playlist.songIds) {
+        // TODO: is there any other way to do this?
+        const song = await songModel.findById(id)
+        playlist.songs.push(song)
+      }
+      playlists.push(playlist)
     }
 
     // response different from schema here
     res.json({ success: true, user: {
+      id: user.id,
       playlists: playlists,
-      artists: [],
-      queue: []
+      artists: user.artists,
+      recommendations: user.recommendations,
+      queue: user.queue
     }})
   }
   catch (error) {
@@ -46,26 +59,30 @@ const getUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const user = await userModel.findById(req.body.id)
-    // TODO: will i lose reference if i don't use Array.from here?
-    user.playlistSongIds = Array.from(req.body.playlistSongIds)
+    user.playlists = req.body.playlists
     const playlists = []
-    console.log(user.playlistSongIds)
-    for(const id of user.playlistSongIds) {
-      // TODO: is there any other way to do this?
-      const song = await songModel.findById(id)
-      playlists.push(song)
+    for(const _playlist of user.playlists) {
+      const playlist = { name: _playlist.name, songs: [] }
+      for(const id of _playlist.songIds) {
+        // TODO: is there any other way to do this?
+        const song = await songModel.findById(id)
+        playlist.songs.push(song)
+      }
+      playlists.push(playlist)
     }
 
     await user.save()
 
     res.json({ success: true, user: {
+      id: user.id,
       playlists: playlists,
-      artists: [],
-      queue: []
+      artists: user.artists,
+      recommendations: user.recommendations,
+      queue: user.queue
     }})
   }
   catch (error) {
-    res.json( { success: false })
+    res.json({ success: false })
   }
 }
 
