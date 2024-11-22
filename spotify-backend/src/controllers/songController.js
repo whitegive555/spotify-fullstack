@@ -7,7 +7,7 @@ const addSong = async (req, res) => {
     const title = req.body.title  
     const artist = req.body.artist 
     
-    const imageFile = req.files.image[0]
+    const imageFile = req.files.artwork[0]
     const audioFile = req.files.audio[0]
     imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
     audioUpload = await cloudinary.uploader.upload(audioFile.path, { resource_type: 'video' })
@@ -30,6 +30,7 @@ const addSong = async (req, res) => {
     console.log(song)
 
     res.json({ success: true, song: {
+      id: song.id,
       title: song.title,
       artist: song.artist,
       artworkUrl: song.artworkUrl,
@@ -53,6 +54,7 @@ const getAllSongs = async (req, res) => {
   try {
     const allSongs = await songModel.find({})
     const songs = allSongs.map(item => ({
+      id: item.id,
       title: item.title,
       artist: item.artist,
       artworkUrl: item.artworkUrl,

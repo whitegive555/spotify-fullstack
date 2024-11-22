@@ -32,6 +32,7 @@ const addAlbum = async (req, res) => {
     await album.save()
 
     res.json({ success: true, album: {
+      id: album.id,
       title: album.title,
       artist: album.artist,
       year: album.year,
@@ -61,6 +62,7 @@ const getAlbum = async (req, res) => {
     }
 
     res.json({ success: true, album: {
+      id: album.id,
       title: album.title,
       artist: album.artist,
       year: album.year,
@@ -80,6 +82,7 @@ const getAllAlbums = async (req, res) => {
   try {
     const allAlbums = await albumModel.find({})
     const albums = allAlbums.map(item => ({
+      id: item.id,
       title: item.title,
       artist: item.artist,
       year: item.year,
@@ -113,6 +116,7 @@ const updateAlbum = async (req, res) => {
     await album.save()
     
     res.json({ success: true, album: {
+      id: album.id,
       title: album.title,
       artist: album.artist,
       year: album.year,

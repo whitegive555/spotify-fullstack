@@ -4,7 +4,7 @@ import upload from '../middleware/multer.js'
 
 const albumRouter = express.Router()
 
-albumRouter.post('/add', upload.single('image'), addAlbum)
+albumRouter.post('/add', upload.single('artwork'), addAlbum)
 albumRouter.get('/get', getAlbum)
 albumRouter.get('/getAll', getAllAlbums)
 albumRouter.post('/update', updateAlbum)
