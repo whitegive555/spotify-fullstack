@@ -6,30 +6,36 @@ import Volumebar from './Volumebar'
 
 const Player = () => {
 
-  const { track, playStatus, play, pause, time, previous, next } = useContext(PlayerContext)
+  const { isPlaying, playingSong, play, pause, previous, next, time } = useContext(PlayerContext)
 
-  return track ? (
-    <div className='lg:col-span-3 h-[72px] bg-black flex justify-between items-center text-white relative'>
-      <div className='hidden lg:flex items-center gap-4 pl-2'>
-        <img className='w-14 rounded' src={track.image} alt=''/>
+  return (
+    <div className='lg:col-span-3 h-[72px] bg-black flex items-center text-white relative'>
+      {/* ------------- left ------------- */}
+      { isPlaying ?
+      <div className='hidden lg:flex items-center gap-4 pl-2 absolute left-0'>
+        <img className='w-14 rounded' src={playingSong.artwork} alt=''/>
         <div>
-          <p className='text-sm'>{track.name}</p>
-          <p className='text-xs text-[#b3b3b3]'>{track.desc.slice(0, 12)}</p>
+          <p className='text-sm'>{playingSong.title}</p>
+          <p className='text-xs text-[#b3b3b3]'>{playingSong.artist.slice(0, 12)}</p>
         </div>
         <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#1ed760]"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"></path></svg>
       </div>
+      : null}
 
+      {/* ------------ middle ------------ */}
       <div className='flex flex-col items-center gap-2 absolute left-2/4 -translate-x-2/4 w-[608px]'>
+        {/* ----------- first row ---------- */}
         <div className='flex justify-center items-center gap-2'>
           <button className='h-8 w-8 flex justify-center items-center'>
             <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b3b3b3]"><path d="M13.151.922a.75.75 0 1 0-1.06 1.06L13.109 3H11.16a3.75 3.75 0 0 0-2.873 1.34l-6.173 7.356A2.25 2.25 0 0 1 .39 12.5H0V14h.391a3.75 3.75 0 0 0 2.873-1.34l6.173-7.356a2.25 2.25 0 0 1 1.724-.804h1.947l-1.017 1.018a.75.75 0 0 0 1.06 1.06L15.98 3.75 13.15.922zM.391 3.5H0V2h.391c1.109 0 2.16.49 2.873 1.34L4.89 5.277l-.979 1.167-1.796-2.14A2.25 2.25 0 0 0 .39 3.5z"></path><path d="m7.5 10.723.98-1.167.957 1.14a2.25 2.25 0 0 0 1.724.804h1.947l-1.017-1.018a.75.75 0 1 1 1.06-1.06l2.829 2.828-2.829 2.828a.75.75 0 1 1-1.06-1.06L13.109 13H11.16a3.75 3.75 0 0 1-2.873-1.34l-.787-.938z"></path></svg>
           </button>
-          <button className='h-8 w-8 flex justify-center items-center'>
+          <button onClick={previous} className='h-8 w-8 flex justify-center items-center'>
             <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b3b3b3]"><path d="M3.3 1a.7.7 0 0 1 .7.7v5.15l9.95-5.744a.7.7 0 0 1 1.05.606v12.575a.7.7 0 0 1-1.05.607L4 9.149V14.3a.7.7 0 0 1-.7.7H1.7a.7.7 0 0 1-.7-.7V1.7a.7.7 0 0 1 .7-.7h1.6z"></path></svg>
           </button>
+          {/* -------- play and pause -------- */}
           <div className='h-8 -w-24 px-2'>
             {
-              playStatus
+              isPlaying
               ? <button onClick={pause} className='bg-white h-8 w-8 rounded-full flex justify-center items-center'>
                 <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4"><path d="M2.7 1a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7H2.7zm8 0a.7.7 0 0 0-.7.7v12.6a.7.7 0 0 0 .7.7h2.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-2.6z"></path></svg>
               </button>
@@ -38,30 +44,23 @@ const Player = () => {
               </button>
             }
           </div>
-          <button className='h-8 w-8 flex justify-center items-center'>
+          <button onClick={next} className='h-8 w-8 flex justify-center items-center'>
             <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b3b3b3]"><path d="M12.7 1a.7.7 0 0 0-.7.7v5.15L2.05 1.107A.7.7 0 0 0 1 1.712v12.575a.7.7 0 0 0 1.05.607L12 9.149V14.3a.7.7 0 0 0 .7.7h1.6a.7.7 0 0 0 .7-.7V1.7a.7.7 0 0 0-.7-.7h-1.6z"></path></svg>
           </button>
           <button className='h-8 w-8 flex justify-center items-center'>
             <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b3b3b3]"><path d="M0 4.75A3.75 3.75 0 0 1 3.75 1h8.5A3.75 3.75 0 0 1 16 4.75v5a3.75 3.75 0 0 1-3.75 3.75H9.81l1.018 1.018a.75.75 0 1 1-1.06 1.06L6.939 12.75l2.829-2.828a.75.75 0 1 1 1.06 1.06L9.811 12h2.439a2.25 2.25 0 0 0 2.25-2.25v-5a2.25 2.25 0 0 0-2.25-2.25h-8.5A2.25 2.25 0 0 0 1.5 4.75v5A2.25 2.25 0 0 0 3.75 12H5v1.5H3.75A3.75 3.75 0 0 1 0 9.75v-5z"></path></svg>
           </button>
-          
-          {/* <img className='w-4 cursor-pointer' src={images.shuffle_icon} alt=''/>
-          <img onClick={previous} className='w-4 cursor-pointer' src={images.prev_icon} alt=''/>
-          {playStatus
-            ? <img onClick={pause} className='w-4 cursor-pointer' src={images.pause_icon} alt=''/>
-            : <img onClick={play} className='w-4 cursor-pointer' src={images.play_icon} alt=''/>
-          }
-          <img onClick={next} className='w-4 cursor-pointer' src={images.next_icon} alt=''/>
-          <img className='w-4 cursor-pointer' src={images.loop_icon} alt=''/> */}
         </div>
+        {/* ---------- second row ---------- */}
         <div className='flex justify-center items-center gap-[2px]'>
-          <div className='w-8 text-xs text-[#b3b3b3] text-right align-middle'>{time.currentTime.minute.toString()}:{time.currentTime.second.toString().padStart(2, '0')}</div>
+          <div className='w-8 text-xs text-[#b3b3b3] text-right align-middle'>{time.currentTime.minute}:{time.currentTime.second}</div>
           <Seekbar />
-          <div className='w-8 text-xs text-[#b3b3b3] text-left align-middle'>{time.totalTime.minute.toString()}:{time.totalTime.second.toString().padStart(2, '0')}</div>
+          <div className='w-8 text-xs text-[#b3b3b3] text-left align-middle'>{time.totalTime.minute}:{time.totalTime.second}</div>
         </div>
       </div>
 
-      <div className='hidden lg:flex justify-end items-center'>
+      {/* ------------- right ------------ */}
+      <div className='hidden lg:flex justify-end items-center absolute right-0'>
         <button className='h-8 w-8 flex justify-center items-center'>
           <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b2b2b2]"><path d="M11.196 8 6 5v6l5.196-3z"></path><path d="M15.002 1.75A1.75 1.75 0 0 0 13.252 0h-10.5a1.75 1.75 0 0 0-1.75 1.75v12.5c0 .966.783 1.75 1.75 1.75h10.5a1.75 1.75 0 0 0 1.75-1.75V1.75zm-1.75-.25a.25.25 0 0 1 .25.25v12.5a.25.25 0 0 1-.25.25h-10.5a.25.25 0 0 1-.25-.25V1.75a.25.25 0 0 1 .25-.25h10.5z"></path></svg>
         </button>
@@ -86,8 +85,7 @@ const Player = () => {
         </button>
       
       </div>
-    </div>
-  ) : null
+    </div>)
 }
 
 export default Player

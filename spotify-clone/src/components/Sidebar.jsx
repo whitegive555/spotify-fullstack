@@ -4,14 +4,7 @@ import { PlayerContext } from '../context/PlayerContext'
 import { useState } from 'react'
 
 const Sidebar = () => {
-  const { playlistData, albumsData } = useContext(PlayerContext)
-  const [playlists, setPlaylists] = useState([])
-  
-
-  useEffect(() => {
-    const playlistSet = new Set(playlistData)
-    setPlaylists(albumsData.filter(item => playlistSet.has(item._id)))
-  }, [])
+  const { playlists } = useContext(PlayerContext)
 
   return (
     <nav className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden lg:flex'>
@@ -42,18 +35,20 @@ const Sidebar = () => {
           </button>
         </div>
       </div>
+
       <div className='flex flex-col justify-between items-center gap-4 p-2'>
         {
           playlists.map((item, index) =>
           (<li key={index} className='h-12 w-full flex justify-start items-center gap-3'>
-            <img src={item.image} className='h-12 w-12 rounded-md' alt=''/>
+            <img src={item.songs[0].artworkUrl} className='h-12 w-12 rounded-md' alt=''/>
             <div className='w-[188px] h-12'>
               <p className='text-white overflow-ellipsis text-nowrap'>{item.name}</p>
-              <p className='text-[#b3b3b3] text-sm'>{item.desc}</p>
+              <p className='text-[#b3b3b3] text-sm'>{item.songs[0].artist}</p>
             </div>
           </li>))
         }
       </div>
+
     </nav>
   )
 }
