@@ -45,9 +45,7 @@ const PlayerContextProvider = (props) => {
         setPlaylists(response.data.user.playlists)
         setArtists(response.data.user.artists)
         setRecommendations(response.data.user.recommendations)
-        setQueue(response.data.user.queue)
-        console.log(response.data.user.playlists)
-        
+        setQueue(response.data.user.queue)        
       }
     }
     catch (error) {
