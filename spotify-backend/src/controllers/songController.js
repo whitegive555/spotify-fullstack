@@ -57,6 +57,7 @@ const getAllSongs = async (req, res) => {
       title: item.title,
       artist: item.artist,
       artworkUrl: item.artworkUrl,
+      audioUrl: item.audioUrl,
       duration: item.duration
     }))
 

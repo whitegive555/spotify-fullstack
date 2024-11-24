@@ -58,7 +58,14 @@ const getAlbum = async (req, res) => {
     for(const id of album.songIds) {
       // TODO: is there any other way to do this?
       const song = await songModel.findById(id)
-      songs.push(song)
+      songs.push({
+        id: song.id,
+        title: song.title,
+        artist: song.artist,
+        artworkUrl: song.artworkUrl,
+        audioUrl: song.audioUrl,
+        duration: song.duration
+      })
     }
 
     res.json({ success: true, album: {

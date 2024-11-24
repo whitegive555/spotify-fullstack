@@ -7,13 +7,12 @@ import axios from 'axios'
 const DisplayAlbum = () => {
   const url = 'http://localhost:4000'
 
-  const { albumId } = useParams()
+  const { id } = useParams()
   const [album, setAlbum] = useState(null)
 
   const getAlbumData = async () => {
     try {
-      console.log(albumId)
-      const response = await axios.get(`${url}/api/album/get?id=${albumId}`)
+      const response = await axios.get(`${url}/api/album/get?id=${id}`)
       if(response.data.success) {
         setAlbum(response.data.album)
       }

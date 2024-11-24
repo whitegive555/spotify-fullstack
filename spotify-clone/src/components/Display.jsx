@@ -8,11 +8,11 @@ import { PlayerContext } from '../context/PlayerContext'
 const Display = () => {
 
   return (
-    <div className='col-span-1 overflow-auto px-6 pt-4 rounded-lg bg-[#121212] text-white'>
+    <div className='col-span-1 overflow-auto rounded-lg bg-[#121212] text-white'>
       {
         <Routes>
           <Route path='/' element={<DisplayHome />} />
-          <Route path='/album/:albumId' element={<DisplayAlbum />} />
+          <Route path='/album/:id' element={<DisplayAlbum />} />
         </Routes>
       }
     </div>
