@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import Sidebar from './components/Sidebar'
+import LeftSidebar from './components/LeftSidebar'
+import RightSidebar from './components/RightSidebar'
 import Player from './components/Player'
 import Display from './components/Display'
 import { PlayerContext } from './context/PlayerContext'
@@ -14,9 +15,9 @@ const App = () => {
       {
         <div className='h-screen w-screen bg-black grid rid-rows-[minmax(0,1fr)_auto] lg:grid-rows-[auto_minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] gap-2 p-2'>
           <Navbar />
-          <Sidebar />
+          <LeftSidebar />
           <Display />
-          <div className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg hidden lg:flex'></div>
+          <RightSidebar />
           <Player />
         </div>
       }

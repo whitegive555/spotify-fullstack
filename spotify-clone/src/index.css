@@ -26,4 +26,25 @@
 
 html {
   font-family: 'Spotify Mix UI';
+  user-select: none;
 }
+
+.green-dot {
+  position: relative;
+}
+
+.green-dot:after {
+  background-color: #1db954;
+  color: #1db954;
+  border-radius: 50%;
+  bottom: 0;
+  content: "";
+  display: block;
+  height: 4px;
+  left: 50%;
+  position: absolute;
+  transform: translateX(-50%);
+  width: 4px;
+  inline-size: 4px!important;
+}
+

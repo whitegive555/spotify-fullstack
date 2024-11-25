@@ -113,6 +113,8 @@ const PlayerContextProvider = (props) => {
             second: Math.floor(audioRef.current.duration % 60).toString().padStart(2, '0')
           }
         })
+
+        // send request to update queue
       }
     }, 1000);
   }, [audioRef])
