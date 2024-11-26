@@ -52,7 +52,7 @@ const ListSong = () => {
               <img className='w-12' src={item.artworkUrl} alt=''/>
               <p>{item.title}</p>
               <p>{item.artist}</p>
-              <p>{Math.floor(item.duration / 60)}:{Math.floor(item.duration % 60)}</p>
+              <p>{Math.floor(item.duration / 60).toString()}:{Math.floor(item.duration % 60).toString().padStart(2, '0')}</p>
               <p onClick={() => deleteSong(item.id)}  className='cursor-pointer'>x</p>
             </div>
           )
