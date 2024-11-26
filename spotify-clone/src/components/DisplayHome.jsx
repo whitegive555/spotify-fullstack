@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState } from 'react'
 import AlbumItem from './AlbumItem'
 import { PlayerContext } from '../context/PlayerContext'
-import { NavLink } from 'react-router-dom'
 
 const DisplayHome = () => {
   const { home } = useContext(PlayerContext)
@@ -27,7 +26,7 @@ const DisplayHome = () => {
           <a className='font-bold text-[24px] leading-[1.2] text-white'>Recommended For You</a>
           {/* <a className='font-bold text-sm text-white hover:underline cursor-pointer pr-2'>Show all</a> */}
         </div>
-        <div className='-mx-3 flex'>
+        <div className='-mx-3 flex flex-wrap'>
           {
             home.map((item, index) => (
             <AlbumItem key={index} id={item.id} title={item.title} artist={item.artist} artworkUrl={item.artworkUrl} />

@@ -14,7 +14,7 @@ const App = () => {
   return (
     <>
       {
-        <div className='h-screen w-screen bg-black grid rid-rows-[minmax(0,1fr)_auto] lg:grid-rows-[auto_minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] gap-2 p-2'>
+        <div className='h-screen w-screen bg-black grid lg:grid-rows-[auto_minmax(0,1fr)_auto] lg:grid-cols-[auto_minmax(0,1fr)_auto] md:grid-cols-[auto_minmax(0,1fr)] grid-cols-[minmax(0,1fr)] gap-2 p-2'>
           <Navbar />
           <LeftSidebar />
           <Display />

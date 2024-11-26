@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import { images } from '../assets/assets'
 import { PlayerContext } from '../context/PlayerContext'
 import Seekbar from './Seekbar'
 import Volumebar from './Volumebar'
@@ -9,7 +8,7 @@ const Player = () => {
   const { isPlaying, playingSong, play, pause, previous, next, time } = useContext(PlayerContext)
 
   return (
-    <div className='lg:col-span-3 h-[72px] bg-black flex items-center text-white relative'>
+    <div className='col-span-1 md:col-span-2 lg:col-span-3 h-[72px] bg-black flex items-center text-white relative justify-between'>
       {/* ------------- left ------------- */}
       { playingSong ?
       <div className='hidden lg:flex items-center gap-4 pl-2 absolute left-0'>
@@ -60,7 +59,7 @@ const Player = () => {
       </div>
 
       {/* ------------- right ------------ */}
-      <div className='hidden lg:flex justify-end items-center absolute right-0'>
+      <div className='hidden min-[1326px]:flex justify-end items-center absolute right-0'>
         <button className='h-8 w-8 flex justify-center items-center cursor-default'>
           <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b2b2b2]"><path d="M11.196 8 6 5v6l5.196-3z"></path><path d="M15.002 1.75A1.75 1.75 0 0 0 13.252 0h-10.5a1.75 1.75 0 0 0-1.75 1.75v12.5c0 .966.783 1.75 1.75 1.75h10.5a1.75 1.75 0 0 0 1.75-1.75V1.75zm-1.75-.25a.25.25 0 0 1 .25.25v12.5a.25.25 0 0 1-.25.25h-10.5a.25.25 0 0 1-.25-.25V1.75a.25.25 0 0 1 .25-.25h10.5z"></path></svg>
         </button>
@@ -83,7 +82,6 @@ const Player = () => {
         <button className='h-8 w-8 flex justify-center items-center cursor-default'>
           <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#b2b2b2]"><path d="M6.53 9.47a.75.75 0 0 1 0 1.06l-2.72 2.72h1.018a.75.75 0 0 1 0 1.5H1.25v-3.579a.75.75 0 0 1 1.5 0v1.018l2.72-2.72a.75.75 0 0 1 1.06 0zm2.94-2.94a.75.75 0 0 1 0-1.06l2.72-2.72h-1.018a.75.75 0 1 1 0-1.5h3.578v3.579a.75.75 0 0 1-1.5 0V3.81l-2.72 2.72a.75.75 0 0 1-1.06 0z"></path></svg>
         </button>
-      
       </div>
     </div>)
 }

@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { url } from '../App'
 import { toast } from 'react-toastify'
 
 const ListAlbum = () => {
@@ -8,7 +7,7 @@ const ListAlbum = () => {
 
   const fetchAlbums = async () => {
     try {
-      const response = await axios.get(`${url}/api/album/getAll`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/album/getAll`)
       if (response.data.success) {
         setAlbums(response.data.albums)
       }
@@ -20,7 +19,7 @@ const ListAlbum = () => {
 
   const deleteAlbum = async (id) => {
     try {
-      const response = await axios.post(`${url}/api/album/delete/${id}`)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/album/delete/${id}`)
       if (response.data.success) {
         toast.success('Album deleted')
         await fetchAlbums()

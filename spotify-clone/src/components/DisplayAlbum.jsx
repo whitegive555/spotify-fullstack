@@ -1,20 +1,17 @@
 import React, { useContext, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { images } from '../assets/assets'
 import { useState } from 'react'
 import axios from 'axios'
 import { PlayerContext } from '../context/PlayerContext'
 
 const DisplayAlbum = () => {
-  const url = 'http://localhost:4000'
-
   const { id } = useParams()
   const [album, setAlbum] = useState(null)
   const { playAlbum } = useContext(PlayerContext)
 
   const getAlbumData = async () => {
     try {
-      const response = await axios.get(`${url}/api/album/get/${id}`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/album/get/${id}`)
       
       if(response.data.success) {
         setAlbum(response.data.album)
@@ -56,7 +53,7 @@ const DisplayAlbum = () => {
       <div className='relative'>
         <div className='h-[104px] p-6 flex justify-between items-center'>
           <div className='flex justify-start items-center gap-6'>
-            <button className='w-14 h-14 bg-[#1ed760] rounded-full p-4 mr-2'>
+            <button onClick={() => playAlbum(album.songs, 0)} className='w-14 h-14 bg-[#1ed760] rounded-full p-4 mr-2'>
               <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="w-6 fill-black"><path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path></svg>
             </button>
             <button className='w-8 h-8 bg-transparent rounded-full cursor-default'>

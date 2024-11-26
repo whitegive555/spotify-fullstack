@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { url } from '../App'
 import { toast } from 'react-toastify'
 
 const ListSong = () => {
@@ -8,7 +7,7 @@ const ListSong = () => {
 
   const fetchSongs = async () => {
     try {
-      const response = await axios.get(`${url}/api/song/getAll`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/song/getAll`)
       if (response.data.success) {
         setSongs(response.data.songs)
       }
@@ -24,7 +23,7 @@ const ListSong = () => {
 
   const deleteSong = async (id) => {
     try {
-      const response = await axios.post(`${url}/api/song/delete/${id}`)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/song/delete/${id}`)
       if (response.data.success) {
         toast.success('Song deleted')
         await fetchSongs()

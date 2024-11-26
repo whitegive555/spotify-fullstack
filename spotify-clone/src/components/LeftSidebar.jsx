@@ -8,7 +8,7 @@ const LeftSidebar = () => {
   const navigate = useNavigate()
 
   return (
-    <nav className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden lg:flex'>
+    <nav className='md:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden md:flex'>
       <div className='pt-1 px-2'>
         <div className='flex gap-2 justify-start items-center'>
           <div className='h-[40px] w-[168px] px-2 py-1 flex justify-start items-center gap-3 text-[#b3b3b3] font-bold'>

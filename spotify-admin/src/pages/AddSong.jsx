@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { assets } from '../assets/assets'
 import axios from 'axios'
-import { url } from '../App'
 import { toast } from 'react-toastify'
 import { parseBlob } from 'music-metadata'
 
@@ -34,7 +33,7 @@ const AddSong = () => {
       songForm.append('artist', artist != '' ? artist : metadata.common.artist)
       songForm.append('artwork', artwork != false ? artwork : new File([metadata.common.picture[0].data], '25.jpg', { type: 'image/jpeg' }))
       songForm.append('audio', audio)
-      const songResponse = await axios.post(`${url}/api/song/add`, songForm)
+      const songResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/song/add`, songForm)
 
       if (songResponse.data.success) {
         toast.success('Song added')

@@ -4,8 +4,6 @@ import axios from 'axios'
 export const PlayerContext = createContext()
 
 const PlayerContextProvider = (props) => {
-  const url = 'http://localhost:4000'
-
   const [albums, setAlbums] = useState([])
   const [home, setHome] = useState([])
   const [queue, setQueue] = useState([])
@@ -39,7 +37,7 @@ const PlayerContextProvider = (props) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`${url}/api/user/get/6745256cf6246bf565fdcf21`)
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/get/${import.meta.env.VITE_TEST_USER_ID}`)
       if(response.data.success) {
         setAlbums(response.data.user.albums)
         setHome(response.data.user.home)        
@@ -71,6 +69,17 @@ const PlayerContextProvider = (props) => {
       else if(index == queue.length-1) {
         setIsPlaying(false)
         setPlayingSong(null)
+        setProgress(0)
+        setTime({
+          currentTime: {
+            minute: '-',
+            second: '--'
+          },
+          totalTime: {
+            minute: '-',
+            second: '--'
+          }
+        })
         setQueue([])
       }
     })

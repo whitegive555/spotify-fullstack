@@ -7,16 +7,6 @@
 }
 
 @font-face {
-  font-family: 'Spotify Mix';
-  src: local('Spotify Mix Regular'), local('Spotify-Mix-Regular'),
-    url('./assets/SpotifyMix-Regular.woff2') format('woff2'),
-    url('./assets/SpotifyMix-Regular.woff') format('woff'),
-    url('./assets/SpotifyMix-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "Spotify Mix UI";
   src: local('Spotify Mix UI'),
     url('./assets/SpotifyMixUI-Regular.woff2') format('woff2');
