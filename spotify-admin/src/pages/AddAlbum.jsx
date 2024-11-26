@@ -5,29 +5,32 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 
 const AddAlbum = () => {
-  const [image, setImage] = useState(false)
-  const [color, setColor] = useState('#121212')
-  const [name, setName] = useState('')
-  const [desc, setDesc] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const [title, setTitle] = useState('')
+  const [artist, setArtist] = useState('')
+  const [year, setYear] = useState('')
+  const [artwork, setArtwork] = useState(false)
+  const [bgColor, setBgColor] = useState('#121212')
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
-    console.log('......')
     try {
-      const formData = new FormData()
-      formData.append('name', name)
-      formData.append('desc', desc)
-      formData.append('image', image)
-      formData.append('bgColor', color)
-      const response = await axios.post(`${url}/api/album/add`, formData)
+      const albumForm = new FormData()
+      albumForm.append('title', title)
+      albumForm.append('artist', artist)
+      albumForm.append('year', year)
+      albumForm.append('artwork', artwork)
+      albumForm.append('bgColor', bgColor)
+      const response = await axios.post(`${url}/api/album/add`, albumForm)
       
       if (response.data.success) {
         toast.success('Album added')
-        setName('')
-        setDesc('')
-        setImage(false)
+        setTitle('')
+        setArtist('')
+        setYear('')
+        setArtwork(false)
       }
       else {
         toast.error('Something went wrong')
@@ -45,23 +48,27 @@ const AddAlbum = () => {
     </div> : (
     <form onSubmit={onSubmitHandler} className='flex flex-col items-start gap-8 text-gray-600'>
       <div className='flex flex-col gap-4'>
-        <p>Upload Image</p>
-        <input onChange={(e) => setImage(e.target.files[0])} type='file' id='image' accept='image/*' hidden />
+        <p>Artwork</p>
+        <input onChange={(e) => setArtwork(e.target.files[0])} type='file' id='image' accept='image/*' hidden />
         <label htmlFor='image'>
-          <img className='w-24 cursor-pointer' src={image ? URL.createObjectURL(image) : assets.upload_area} alt=''/>
+          <img className='w-24 cursor-pointer' src={artwork ? URL.createObjectURL(artwork) : assets.upload_area} alt=''/>
         </label>
       </div>
       <div className='flex flex-col gap-2.5'>
-        <p>Album Name</p>
-        <input onChange={(e) => setName(e.target.value)} value={name} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' type='text' placeholder='Type here' />
+        <p>Title</p>
+        <input onChange={(e) => setTitle(e.target.value)} value={title} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' type='text' placeholder='Type here' />
       </div>
       <div className='flex flex-col gap-2.5'>
-        <p>Album Description</p>
-        <input onChange={(e) => setDesc(e.target.value)} value={desc} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' type='text' placeholder='Type here' />
+        <p>Artist</p>
+        <input onChange={(e) => setArtist(e.target.value)} value={artist} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' type='text' placeholder='Type here' />
+      </div>
+      <div className='flex flex-col gap-2.5'>
+        <p>Year</p>
+        <input onChange={(e) => setYear(e.target.value)} value={year} className='bg-transparent outline-green-600 border-2 border-gray-400 p-2.5 w-[max(40vw,250px)]' type='text' placeholder='Type here' />
       </div>
       <div className='flex flex-col gap-3'>
         <p>Background Color</p>
-        <input onChange={(e) => setColor(e.target.value)} value={color} type='color' />
+        <input onChange={(e) => setBgColor(e.target.value)} value={bgColor} type='color' />
       </div>
       <button className='text-base bg-black text-white py-2.5 px-14 cursor-pointer'>ADD</button>
     </form>
