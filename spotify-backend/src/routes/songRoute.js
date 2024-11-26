@@ -9,6 +9,6 @@ songRouter.post('/add', upload.fields([
   { name: 'audio', maxCount: 1 }
 ]), addSong)
 songRouter.get('/getAll', getAllSongs)
-songRouter.post('/delete', deleteSong)
+songRouter.post('/delete/:id', deleteSong)
 
 export default songRouter

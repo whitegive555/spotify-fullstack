@@ -6,16 +6,13 @@ const addSong = async (req, res) => {
   try {
     const title = req.body.title  
     const artist = req.body.artist 
-    
     const imageFile = req.files.artwork[0]
     const audioFile = req.files.audio[0]
     imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
     audioUpload = await cloudinary.uploader.upload(audioFile.path, { resource_type: 'video' })
-
-    // const duration = `${Math.floor(audioUpload.duration / 60)}:${Math.floor(audioUpload.duration % 60).padStart(2, '0')}`
     const duration = audioUpload.duration
 
-    const songData = {
+    const song = songModel({
       title,
       artist,
       artworkId: imageUpload.public_id,
@@ -23,9 +20,7 @@ const addSong = async (req, res) => {
       audioId: audioUpload.public_id,
       audioUrl: audioUpload.secure_url,
       duration
-    }
-
-    const song = songModel(songData)
+    })
     await song.save()
 
     res.json({ success: true, song: {
@@ -52,6 +47,7 @@ const addSong = async (req, res) => {
 const getAllSongs = async (req, res) => {
   try {
     const allSongs = await songModel.find({})
+
     const songs = allSongs.map(item => ({
       id: item.id,
       title: item.title,
@@ -70,7 +66,7 @@ const getAllSongs = async (req, res) => {
 
 const deleteSong = async (req, res) => {
   try {
-    const song = await songModel.findById(req.body.id)
+    const song = await songModel.findById(req.params.id)
     
     await cloudinary.uploader.destroy(song.artworkId, { resource_type: 'image' })
     await cloudinary.uploader.destroy(song.audioId, { resource_type: 'video' })

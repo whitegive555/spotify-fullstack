@@ -1,10 +1,8 @@
 import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema({
-  playlists: { type: Array, required: true },
-  artists: { type: Array, required: true },
-  recommendations: { type: Array, required: true },
-  queue: { type: Array, required: true }
+  albums: { type: Array, required: true },
+  home: { type: Array, required: true }
 })
 
 const userModel = mongoose.models.user || mongoose.model('user', userSchema)

@@ -5,23 +5,17 @@ import albumModel from '../models/albumModel.js'
 
 const addUser = async (req, res) => {
   try {
-    const userData = {
-      playlists: [],
-      artists: [],
-      recommendations: [],
-      queue: []
-    }
-    
-    const user = userModel(userData)
+    const user = userModel({
+      albums: [],
+      home: []
+    })
     await user.save()
     
     // response different from schema here
     res.json({ success: true, user: {
       id: user.id,
-      playlists: user.playlists,
-      artists: user.artists,
-      recommendations: user.recommendations,
-      queue: user.queue
+      albums: user.albums,
+      home: user.home
     }})
   }
   catch (error) {
@@ -31,52 +25,40 @@ const addUser = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
-    const user = await userModel.findById(req.query.id)
+    const user = await userModel.findById(req.params.id)
 
-    const playlists = []
-    for(const _playlist of user.playlists) {
-      const playlist = { name: _playlist.name, songs: [] }
-      for(const id of _playlist.songIds) {
-        // TODO: is there any other way to do this?
-        const song = await songModel.findById(id)
-        playlist.songs.push({
-          id: song.id,
-          title: song.title,
-          artist: song.artist,
-          artworkUrl: song.artworkUrl,
-          audioUrl: song.audioUrl,
-          duration: song.duration
-        })
+    const albums = await Promise.all(user.albums.map(async id => {
+      const album = await albumModel.findById(id)
+      return {
+        id: album.id,
+        title: album.title,
+        artist: album.artist,
+        year: album.year,
+        artworkUrl: album.artworkUrl,
+        bgColor: album.bgColor,
+        songIds: album.songIds,
+        duration: album.duration
       }
-      playlists.push(playlist)
-    }
-
-    const recommendations = []
-    for(const _section of user.recommendations) {
-      const section = { name: _section.name, albums: [] }
-      for(const id of _section.albumIds) {
-        // TODO: is there any other way to do this?
-        const album = await albumModel.findById(id)
-        section.albums.push({
-          id: album.id,
-          title: album.title,
-          artist: album.artist,
-          year: album.year,
-          artworkUrl: album.artworkUrl,
-          bgColor: album.bgColor,
-          duration: album.duration
-        })
+    }))
+    const home = await Promise.all(user.home.map(async id => {
+      const album =  await albumModel.findById(id)
+      return {
+        id: album.id,
+        title: album.title,
+        artist: album.artist,
+        year: album.year,
+        artworkUrl: album.artworkUrl,
+        bgColor: album.bgColor,
+        songIds: album.songIds,
+        duration: album.duration
       }
-      recommendations.push(section)
-    }
+    }))
 
     // response different from schema here
     res.json({ success: true, user: {
       id: user.id,
-      playlists: playlists,
-      artists: user.artists,
-      recommendations: recommendations,
-      queue: user.queue
+      albums: albums,
+      home: home
     }})
   }
   catch (error) {
@@ -86,56 +68,41 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const user = await userModel.findById(req.body.id)
-    user.playlists = req.body.playlists
-    user.recommendations = req.body.recommendations
-
-    const playlists = []
-    for(const _playlist of user.playlists) {
-      const playlist = { name: _playlist.name, songs: [] }
-      for(const id of _playlist.songIds) {
-        // TODO: is there any other way to do this?
-        const song = await songModel.findById(id)
-        playlist.songs.push({
-          id: song.id,
-          title: song.title,
-          artist: song.artist,
-          artworkUrl: song.artworkUrl,
-          audioUrl: song.audioUrl,
-          duration: song.duration
-        })
-      }
-      playlists.push(playlist)
-    }
-    
-    const recommendations = []
-    for(const _section of user.recommendations) {
-      const section = { name: _section.name, albums: [] }
-      
-      for(const id of _section.albumIds) {
-        // TODO: is there any other way to do this?
-        const album = await albumModel.findById(id)
-        section.albums.push({
-          id: album.id,
-          title: album.title,
-          artist: album.artist,
-          year: album.year,
-          artworkUrl: album.artworkUrl,
-          bgColor: album.bgColor,
-          duration: album.duration
-        })
-      }
-      recommendations.push(section)
-    }
-
+    const user = await userModel.findById(req.params.id)
+    user[req.params.field] = req.body[req.params.field]
     await user.save()
+
+    const albums = await Promise.all(user.albums.map(async id => {
+      const album = await albumModel.findById(id)
+      return {
+        id: album.id,
+        title: album.title,
+        artist: album.artist,
+        year: album.year,
+        artworkUrl: album.artworkUrl,
+        bgColor: album.bgColor,
+        songIds: album.songIds,
+        duration: album.duration
+      }
+    }))
+    const home = await Promise.all(user.home.map(async id => {
+      const album = await albumModel.findById(id)
+      return {
+        id: album.id,
+        title: album.title,
+        artist: album.artist,
+        year: album.year,
+        artworkUrl: album.artworkUrl,
+        bgColor: album.bgColor,
+        songIds: album.songIds,
+        duration: album.duration
+      }
+    }))
 
     res.json({ success: true, user: {
       id: user.id,
-      playlists: playlists,
-      artists: user.artists,
-      recommendations: recommendations,
-      queue: user.queue
+      albums: albums,
+      home: home
     }})
   }
   catch (error) {

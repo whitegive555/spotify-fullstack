@@ -23,7 +23,7 @@ const LeftSidebar = () => {
         </div>
         <div className='pt-4 flex gap-2 justify-start items-center'>
           {/* <button className='h-8 px-3 py-1 bg-[#2a2a2a] text-sm text-white rounded-full cursor-default	'>Playlists</button> */}
-          <button className='h-8 px-3 py-1 bg-white text-sm text-black rounded-full cursor-default	'>Playlists</button>
+          <button className='h-8 px-3 py-1 bg-white text-sm text-black rounded-full cursor-default	'>Albums</button>
           <button className='h-8 px-3 py-1 bg-[#2a2a2a] text-sm text-white rounded-full cursor-default	'>Artists</button>
         </div>
         <div className='h-[42px] pt-[10px] -mr-1 flex justify-between items-center'>

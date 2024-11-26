@@ -8,16 +8,14 @@ const addAlbum = async (req, res) => {
     const title = req.body.title
     const artist = req.body.artist
     const year = req.body.year
-    
     const imageFile = req.file
     imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: 'image' })
     // TODO: auto generate bgColor
     const bgColor = req.body.bgColor
-
     const songIds = []
     const duration = 0
 
-    const albumData = {
+    const album = albumModel({
       title,
       artist,
       year,
@@ -26,9 +24,7 @@ const addAlbum = async (req, res) => {
       bgColor,
       songIds,
       duration
-    }
-
-    const album = albumModel(albumData)
+    })
     await album.save()
 
     res.json({ success: true, album: {
@@ -53,20 +49,19 @@ const addAlbum = async (req, res) => {
 
 const getAlbum = async (req, res) => {
   try {
-    const album = await albumModel.findById(req.query.id)
-    const songs = []
-    for(const id of album.songIds) {
-      // TODO: is there any other way to do this?
+    const album = await albumModel.findById(req.params.id)
+
+    const songs = await Promise.all(album.songIds.map(async id => {
       const song = await songModel.findById(id)
-      songs.push({
+      return {
         id: song.id,
         title: song.title,
         artist: song.artist,
         artworkUrl: song.artworkUrl,
         audioUrl: song.audioUrl,
         duration: song.duration
-      })
-    }
+      }
+    }))
 
     res.json({ success: true, album: {
       id: album.id,
@@ -88,6 +83,7 @@ const getAlbum = async (req, res) => {
 const getAllAlbums = async (req, res) => {
   try {
     const allAlbums = await albumModel.find({})
+    
     const albums = allAlbums.map(item => ({
       id: item.id,
       title: item.title,
@@ -107,21 +103,22 @@ const getAllAlbums = async (req, res) => {
 
 const updateAlbum = async (req, res) => {
   try {
-    const album = await albumModel.findById(req.body.id)
-    // TODO: will i lose reference if i don't use Array.from here?
-    album.songIds = Array.from(req.body.songIds)
-    const songs = []
-    let duration = 0
-    for(const id of album.songIds) {
-      // TODO: is there any other way to do this?
-      const song = await songModel.findById(id)
-      songs.push(song)
-      duration += song.duration
-    }
-    album.duration = duration
-
+    const album = await albumModel.findById(req.params.id)
+    album[req.params.field] = req.body[req.params.field]
     await album.save()
-    
+
+    const songs = await Promise.all(album.songIds.map(async (id) => {
+      const song = await songModel.findById(id)
+      return {
+        id: song.id,
+        title: song.title,
+        artist: song.artist,
+        artworkUrl: song.artworkUrl,
+        audioUrl: song.audioUrl,
+        duration: song.duration
+      }
+    }))
+
     res.json({ success: true, album: {
       id: album.id,
       title: album.title,
@@ -140,7 +137,8 @@ const updateAlbum = async (req, res) => {
 
 const deleteAlbum = async (req, res) => {
   try {
-    const album = await albumModel.findById(req.body.id)
+    const album = await albumModel.findById(req.params.id)
+    
     await cloudinary.uploader.destroy(album.artworkId, { resource_type: 'image' })
     await album.deleteOne()
 
