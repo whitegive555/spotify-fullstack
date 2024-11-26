@@ -3,16 +3,18 @@ import { useParams } from 'react-router-dom'
 import { images } from '../assets/assets'
 import { useState } from 'react'
 import axios from 'axios'
+import { PlayerContext } from '../context/PlayerContext'
 
 const DisplayAlbum = () => {
   const url = 'http://localhost:4000'
 
   const { id } = useParams()
   const [album, setAlbum] = useState(null)
+  const { playAlbum } = useContext(PlayerContext)
 
   const getAlbumData = async () => {
     try {
-      const response = await axios.get(`${url}/api/album/get?id=${id}`)
+      const response = await axios.get(`${url}/api/album/get/${id}`)
       
       if(response.data.success) {
         setAlbum(response.data.album)
@@ -24,9 +26,8 @@ const DisplayAlbum = () => {
   }
 
   useEffect(() => {
-    console.log('response')
     getAlbumData()
-  }, [])
+  }, [id])
 
   return album ? (
     <div className='relative'>
@@ -58,8 +59,8 @@ const DisplayAlbum = () => {
             <button className='w-14 h-14 bg-[#1ed760] rounded-full p-4 mr-2'>
               <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="w-6 fill-black"><path d="m7.05 3.606 13.49 7.788a.7.7 0 0 1 0 1.212L7.05 20.394A.7.7 0 0 1 6 19.788V4.212a.7.7 0 0 1 1.05-.606z"></path></svg>
             </button>
-            <button className='w-8 h-8 bg-black rounded-full cursor-default'>
-              <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="w-8 fill-[#1ed760]"><path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"></path></svg>
+            <button className='w-8 h-8 bg-transparent rounded-full cursor-default'>
+              <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="w-8 fill-[#1ed760] border-none"><path d="M1 12C1 5.925 5.925 1 12 1s11 4.925 11 11-4.925 11-11 11S1 18.075 1 12zm16.398-2.38a1 1 0 0 0-1.414-1.413l-6.011 6.01-1.894-1.893a1 1 0 0 0-1.414 1.414l3.308 3.308 7.425-7.425z"></path></svg>
             </button>
             <button className='w-8 h-8 cursor-default'>
               <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 24 24" className="fill-[#b3b3b3]"><path d="M4.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm15 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path></svg>
@@ -83,7 +84,7 @@ const DisplayAlbum = () => {
 
         {
           album.songs.map((item, index) => (
-            <div className='h-14 px-4 text-[#b3b3b3] text-sm flex justify-between items-center rounded-lg hover:bg-[hsla(0,0%,100%,.1)] cursor-pointer'>
+            <div key={index} className='h-14 px-4 text-[#b3b3b3] text-sm flex justify-between items-center rounded-lg hover:bg-[hsla(0,0%,100%,.1)] cursor-pointer' onClick={() => playAlbum(album.songs, index)}>
               <div className='flex justify-start items-center gap-4'>
                 <span className='w-4 p-auto'>{index + 1}</span>
                 <div>

@@ -11,12 +11,12 @@ const Player = () => {
   return (
     <div className='lg:col-span-3 h-[72px] bg-black flex items-center text-white relative'>
       {/* ------------- left ------------- */}
-      { isPlaying ?
+      { playingSong ?
       <div className='hidden lg:flex items-center gap-4 pl-2 absolute left-0'>
-        <img className='w-14 rounded' src={playingSong.artwork} alt=''/>
+        <img className='w-14 rounded' src={playingSong.artworkUrl} alt=''/>
         <div>
           <p className='text-sm'>{playingSong.title}</p>
-          <p className='text-xs text-[#b3b3b3]'>{playingSong.artist.slice(0, 12)}</p>
+          <p className='text-xs text-[#b3b3b3]'>{playingSong.artist}</p>
         </div>
         <svg data-encore-id="icon" role="img" aria-hidden="true" viewBox="0 0 16 16" className="h-4 fill-[#1ed760]"><path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm11.748-1.97a.75.75 0 0 0-1.06-1.06l-4.47 4.47-1.405-1.406a.75.75 0 1 0-1.061 1.06l2.466 2.467 5.53-5.53z"></path></svg>
       </div>

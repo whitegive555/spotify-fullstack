@@ -5,10 +5,11 @@ import Player from './components/Player'
 import Display from './components/Display'
 import { PlayerContext } from './context/PlayerContext'
 import Navbar from './components/Navbar'
+import { useEffect } from 'react'
 
 const App = () => {
   
-  const { audioRef, playingSong } = useContext(PlayerContext)
+  const { audioRef, playingSong, songEnd } = useContext(PlayerContext)
 
   return (
     <>
@@ -21,7 +22,7 @@ const App = () => {
           <Player />
         </div>
       }
-      <audio ref={audioRef} src={playingSong ? playingSong.file : ''} preload='auto'></audio>
+      <audio ref={audioRef} src={playingSong ? playingSong.audioUrl : ''} onEnded={songEnd} preload='auto'></audio>
     </>
   )
 }

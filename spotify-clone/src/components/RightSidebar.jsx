@@ -1,6 +1,10 @@
 import React from 'react'
+import { useContext } from 'react'
+import { PlayerContext } from '../context/PlayerContext'
 
 const RightSidebar = () => {
+  const { playingSong, queue } = useContext(PlayerContext)
+
   return (
     <div className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg hidden lg:flex flex-col'>
       <div className='h-16 flex justify-between items-center px-4'>
@@ -10,29 +14,38 @@ const RightSidebar = () => {
         </button>
       </div>
       
-      <div className='pl-4 pt-4 pr-6 pb-6 flex flex-col gap-6'>
-        <div>
-          <h2 className='text-white font-bold pt-1 pb-[6px]'>Now playing</h2>
-          <div className='flex gap-3 p-2 pl-0'>
-            <img className='w-12 h-12 rounded-[4px]' src='https://res.cloudinary.com/djo1p8rg6/image/upload/v1732360858/yvzj9onimv6nwbtofssm.jpg' alt=''/>
-            <div>
-              <p className='text-[#1ed760]'>Song title</p>
-              <div className='h-[2px]'></div>
-              <p className='text-[#b3b3b3] text-sm'>Song artist</p>
+      <div className='pl-4 pt-4 pr-6 pb-6 flex flex-col gap-6 overflow-auto'>
+        { playingSong ? (
+          <div>
+            <h2 className='text-white font-bold pt-1 pb-[6px]'>Now playing</h2>
+            <div className='flex gap-3 p-2 pl-0'>
+              <img className='w-12 h-12 rounded-[4px]' src={playingSong.artworkUrl} alt=''/>
+              <div>
+                <p className='text-[#1ed760]'>{playingSong.title}</p>
+                <div className='h-[2px]'></div>
+                <p className='text-[#b3b3b3] text-sm'>{playingSong.artist}</p>
+              </div>
             </div>
           </div>
-        </div>
+        ) : null}
 
         <div>
-        <h2 className='text-white font-bold pt-1 pb-[6px]'>Next from: </h2>
-          <div className='flex gap-3 p-2 pl-0'>
-            <img className='w-12 h-12 rounded-[4px]' src='https://res.cloudinary.com/djo1p8rg6/image/upload/v1732360858/yvzj9onimv6nwbtofssm.jpg' alt=''/>
-            <div>
-              <p className='text-white'>Song title</p>
-              <div className='h-[2px]'></div>
-              <p className='text-[#b3b3b3] text-sm'>Song artist</p>
-            </div>
-          </div>
+          <h2 className='text-white font-bold pt-1 pb-[6px]'>Next from: </h2>
+          {
+            queue.map((item, index) => {
+              if(index <= queue.indexOf(playingSong))
+                return null
+              return(
+                <div key={index} className='flex gap-3 p-2 pl-0'>
+                  <img className='w-12 h-12 rounded-[4px]' src={item.artworkUrl} alt=''/>
+                  <div>
+                    <p className='text-white'>{item.title}</p>
+                    <div className='h-[2px]'></div>
+                    <p className='text-[#b3b3b3] text-sm'>{item.artist}</p>
+                  </div>
+                </div>
+            )})
+          }
         </div>
       </div>
     </div>

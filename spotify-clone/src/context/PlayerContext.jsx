@@ -6,9 +6,8 @@ export const PlayerContext = createContext()
 const PlayerContextProvider = (props) => {
   const url = 'http://localhost:4000'
 
-  const [playlists, setPlaylists] = useState([])
-  const [artists, setArtists] = useState([])
-  const [recommendations, setRecommendations] = useState([])
+  const [albums, setAlbums] = useState([])
+  const [home, setHome] = useState([])
   const [queue, setQueue] = useState([])
 
   
@@ -38,14 +37,12 @@ const PlayerContextProvider = (props) => {
 
   {/* ---------- fetch data ---------- */}
 
-  const fetchUserData = async () => {
+  const fetchUser = async () => {
     try {
-      const response = await axios.get(`${url}/api/user/get?id=674088e2ed7c9fc0e67816dc`)
+      const response = await axios.get(`${url}/api/user/get/6745256cf6246bf565fdcf21`)
       if(response.data.success) {
-        setPlaylists(response.data.user.playlists)
-        setArtists(response.data.user.artists)
-        setRecommendations(response.data.user.recommendations)
-        setQueue(response.data.user.queue)        
+        setAlbums(response.data.user.albums)
+        setHome(response.data.user.home)        
       }
     }
     catch (error) {
@@ -54,16 +51,39 @@ const PlayerContextProvider = (props) => {
   }
 
   useEffect(() => {
-    fetchUserData()
+    fetchUser()
     audioRef.current.volume = 0.5
   }, [])
 
   {/* ----- control playing song ----- */}
+  const playAlbum = async (songs, index) => {
+    setPlayingSong(songs[index])
+    setQueue(songs)
+  }
+
+  const songEnd = () => {
+    queue.forEach(async (item, index) => {
+      if(item.id != playingSong.id)
+        return
+      if(index < queue.length-1) {
+        setPlayingSong(queue[index+1])
+      }
+      else if(index == queue.length-1) {
+        setIsPlaying(false)
+        setPlayingSong(null)
+        setQueue([])
+      }
+    })
+  }
+
+  useEffect(() => {
+    play()
+  }, [playingSong])
 
   const play = () => {
     if(!playingSong) return
-    audioRef.current.play()
     setIsPlaying(true)
+    audioRef.current.play()
   }
   
   const pause = () => {
@@ -76,8 +96,6 @@ const PlayerContextProvider = (props) => {
     queue.forEach(async (item, index) => {
       if(item.id == playingSong.id && index > 0) {
         setPlayingSong(queue[index-1])
-        await audioRef.current.play()
-        setIsPlaying(true)
       }
     })
   }
@@ -87,8 +105,6 @@ const PlayerContextProvider = (props) => {
     queue.forEach(async (item, index) => {
       if(item.id == playingSong.id && index < queue.length-1) {
         setPlayingSong(queue[index+1])
-        await audioRef.current.play()
-        setIsPlaying(true)
       }
     })
   }
@@ -101,20 +117,17 @@ const PlayerContextProvider = (props) => {
         if(isSeeking.current) return
 
         seekSliderRef.current.value = audioRef.current.currentTime / audioRef.current.duration * seekSliderRef.current.max
-        setProgress(audioRef.current.currentTime / audioRef.current.duration)
+        setProgress(audioRef.current.currentTime ? audioRef.current.currentTime / audioRef.current.duration : 0)
         setTime({
           currentTime: {
-            minute: Math.floor(audioRef.current.currentTime / 60).toString(),
-            second: Math.floor(audioRef.current.currentTime % 60).toString().padStart(2, '0')
-            
+            minute: audioRef.current.currentTime ? Math.floor(audioRef.current.currentTime / 60).toString() : '-',
+            second: audioRef.current.currentTime ? Math.floor(audioRef.current.currentTime % 60).toString().padStart(2, '0') : '--'
           },
           totalTime: {
-            minute: Math.floor(audioRef.current.duration / 60).toString(),
-            second: Math.floor(audioRef.current.duration % 60).toString().padStart(2, '0')
+            minute: audioRef.current.duration ? Math.floor(audioRef.current.duration / 60).toString() : '-',
+            second: audioRef.current.duration ? Math.floor(audioRef.current.duration % 60).toString().padStart(2, '0') : '--'
           }
         })
-
-        // send request to update queue
       }
     }, 1000);
   }, [audioRef])
@@ -136,12 +149,12 @@ const PlayerContextProvider = (props) => {
     setProgress(seekSliderRef.current.value / seekSliderRef.current.max)
     setTime({
       currentTime: {
-        minute: Math.floor(audioRef.current.currentTime / 60).toString(),
-        second: Math.floor(audioRef.current.currentTime % 60).toString().padStart(2, '0')
+        minute: Math.floor(audioRef.current.duration * seekSliderRef.current.value / seekSliderRef.current.max / 60).toString(),
+        second: Math.floor(audioRef.current.duration * seekSliderRef.current.value / seekSliderRef.current.max % 60).toString().padStart(2, '0')
       },
       totalTime: {
-        minute: Math.floor(audioRef.current.duration / 60).toString(),
-        second: Math.floor(audioRef.current.duration % 60).toString().padStart(2, '0')
+        minute: Math.floor(audioRef.current.duration / 60).toString()  || '-',
+        second: Math.floor(audioRef.current.duration % 60).toString().padStart(2, '0')  || '--'
       }
     })
   }
@@ -169,9 +182,9 @@ const PlayerContextProvider = (props) => {
   }
 
   const contextValue = {
-    playlists, artists, recommendations, queue,
+    albums, home, queue,
 
-    play, pause,
+    play, pause, playAlbum, songEnd,
     previous, next,
 
     audioRef,

@@ -4,7 +4,8 @@ import { PlayerContext } from '../context/PlayerContext'
 import { useState } from 'react'
 
 const LeftSidebar = () => {
-  const { playlists } = useContext(PlayerContext)
+  const { albums } = useContext(PlayerContext)
+  const navigate = useNavigate()
 
   return (
     <nav className='lg:col-span-1 w-[280px] bg-[#121212] rounded-lg flex-col overflow-auto gap-2 p-2 text-white hidden lg:flex'>
@@ -36,24 +37,21 @@ const LeftSidebar = () => {
           </button>
         </div>
       </div>
-
       
-        {
-          playlists.map((item, index) =>
-          (
-            <div key={index} className='flex flex-col justify-between items-center gap-4 p-2 rounded-lg hover:bg-[#1f1f1f]'>
-              <div className='h-12 w-full flex justify-start items-center gap-3 cursor-pointer'>
-                <img src={item.songs[0].artworkUrl} className='h-12 w-12 rounded-md' alt=''/>
-                <div className='w-[188px] h-12'>
-                  <p className='text-white overflow-ellipsis text-nowrap'>{item.name}</p>
-                  <p className='text-[#b3b3b3] text-sm'>{item.songs[0].artist}</p>
-                </div>
+      {
+        albums.map((item, index) =>
+        (
+          <div key={index} className='flex flex-col justify-between items-center gap-4 p-2 rounded-lg cursor-pointer hover:bg-[#1f1f1f]' onClick={() => navigate(`/album/${item.id}`)}>
+            <div className='h-12 w-full flex justify-start items-center gap-3'>
+              <img src={item.artworkUrl} className='h-12 w-12 rounded-md' alt=''/>
+              <div className='w-[188px] h-12'>
+                <p className='text-white overflow-ellipsis text-nowrap'>{item.title}</p>
+                <p className='text-[#b3b3b3] text-sm'>{item.artist}</p>
               </div>
             </div>
-          ))
-        }
-      
-
+          </div>
+        ))
+      }
     </nav>
   )
 }
