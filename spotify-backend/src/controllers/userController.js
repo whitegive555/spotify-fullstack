@@ -28,29 +28,41 @@ const getUser = async (req, res) => {
     const user = await userModel.findById(req.params.id)
 
     const albums = await Promise.all(user.albums.map(async id => {
-      const album = await albumModel.findById(id)
-      return {
-        id: album.id,
-        title: album.title,
-        artist: album.artist,
-        year: album.year,
-        artworkUrl: album.artworkUrl,
-        bgColor: album.bgColor,
-        songIds: album.songIds,
-        duration: album.duration
+      try {
+        const album = await albumModel.findById(id)
+        return {
+          id: album.id,
+          title: album.title,
+          artist: album.artist,
+          year: album.year,
+          artworkUrl: album.artworkUrl,
+          bgColor: album.bgColor,
+          songIds: album.songIds,
+          duration: album.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Album id ${id} not found`)
+        return []
       }
     }))
     const home = await Promise.all(user.home.map(async id => {
-      const album =  await albumModel.findById(id)
-      return {
-        id: album.id,
-        title: album.title,
-        artist: album.artist,
-        year: album.year,
-        artworkUrl: album.artworkUrl,
-        bgColor: album.bgColor,
-        songIds: album.songIds,
-        duration: album.duration
+      try {
+        const album =  await albumModel.findById(id)
+        return {
+          id: album.id,
+          title: album.title,
+          artist: album.artist,
+          year: album.year,
+          artworkUrl: album.artworkUrl,
+          bgColor: album.bgColor,
+          songIds: album.songIds,
+          duration: album.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Album id ${id} not found`)
+        return []
       }
     }))
 
@@ -73,29 +85,41 @@ const updateUser = async (req, res) => {
     await user.save()
 
     const albums = await Promise.all(user.albums.map(async id => {
-      const album = await albumModel.findById(id)
-      return {
-        id: album.id,
-        title: album.title,
-        artist: album.artist,
-        year: album.year,
-        artworkUrl: album.artworkUrl,
-        bgColor: album.bgColor,
-        songIds: album.songIds,
-        duration: album.duration
+      try {
+        const album = await albumModel.findById(id)
+        return {
+          id: album.id,
+          title: album.title,
+          artist: album.artist,
+          year: album.year,
+          artworkUrl: album.artworkUrl,
+          bgColor: album.bgColor,
+          songIds: album.songIds,
+          duration: album.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Album id ${id} not found`)
+        return []
       }
     }))
     const home = await Promise.all(user.home.map(async id => {
-      const album = await albumModel.findById(id)
-      return {
-        id: album.id,
-        title: album.title,
-        artist: album.artist,
-        year: album.year,
-        artworkUrl: album.artworkUrl,
-        bgColor: album.bgColor,
-        songIds: album.songIds,
-        duration: album.duration
+      try {       
+        const album = await albumModel.findById(id)
+        return {
+          id: album.id,
+          title: album.title,
+          artist: album.artist,
+          year: album.year,
+          artworkUrl: album.artworkUrl,
+          bgColor: album.bgColor,
+          songIds: album.songIds,
+          duration: album.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Album id ${id} not found`)
+        return []
       }
     }))
 

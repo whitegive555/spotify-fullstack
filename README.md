@@ -1,14 +1,15 @@
 <div align="center">
-  <h3>Spotify-Fullstack</h3>
+
+  # Spotify-Fullstack
 
   [![en](https://img.shields.io/badge/lang-English-blue.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README-en.md) [![zh](https://img.shields.io/badge/lang-中文-red.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README.md)
 
   Spotify音乐流媒体平台的全栈克隆
 
-  <a href="https://spotify-clone-ls8p.onrender.com">查看Demo</a>
+  [查看Demo](https://spotify-clone-ls8p.onrender.com)
 </div>
 
-<!-- *(使用render.com免费版部署，初次加载需要约50s)* -->
+*(使用render.com免费版部署，初次加载需要约50s)*
 
 ## 开发路线
 ### 音乐流媒体软件

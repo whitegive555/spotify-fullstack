@@ -51,17 +51,28 @@ const getAlbum = async (req, res) => {
   try {
     const album = await albumModel.findById(req.params.id)
 
-    const songs = await Promise.all(album.songIds.map(async id => {
-      const song = await songModel.findById(id)
-      return {
-        id: song.id,
-        title: song.title,
-        artist: song.artist,
-        artworkUrl: song.artworkUrl,
-        audioUrl: song.audioUrl,
-        duration: song.duration
+    let duration = 0
+    const songs = await Promise.all(album.songIds.flatMap(async id => {
+      try {        
+        const song = await songModel.findById(id)
+        duration += song.duration
+        return {
+          id: song.id,
+          title: song.title,
+          artist: song.artist,
+          artworkUrl: song.artworkUrl,
+          audioUrl: song.audioUrl,
+          duration: song.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Song id ${id} not found`)
+        return []
       }
     }))
+    // update album.duration
+    album.duration = duration
+    await album.save()
 
     res.json({ success: true, album: {
       id: album.id,
@@ -80,6 +91,7 @@ const getAlbum = async (req, res) => {
 }
 
 // do not find all songs for each album
+// do not update album.duration
 const getAllAlbums = async (req, res) => {
   try {
     const allAlbums = await albumModel.find({})
@@ -107,17 +119,28 @@ const updateAlbum = async (req, res) => {
     album[req.params.field] = req.body[req.params.field]
     await album.save()
 
-    const songs = await Promise.all(album.songIds.map(async (id) => {
-      const song = await songModel.findById(id)
-      return {
-        id: song.id,
-        title: song.title,
-        artist: song.artist,
-        artworkUrl: song.artworkUrl,
-        audioUrl: song.audioUrl,
-        duration: song.duration
+    let duration = 0
+    const songs = await Promise.all(album.songIds.flatMap(async (id) => {
+      try {
+        const song = await songModel.findById(id)
+        duration += song.duration
+        return {
+          id: song.id,
+          title: song.title,
+          artist: song.artist,
+          artworkUrl: song.artworkUrl,
+          audioUrl: song.audioUrl,
+          duration: song.duration
+        }
+      }
+      catch (error) {
+        console.log(`Error: Song id ${id} not found`)
+        return []
       }
     }))
+    // update album.duration
+    album.duration = duration
+    await album.save()
 
     res.json({ success: true, album: {
       id: album.id,
