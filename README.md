@@ -5,8 +5,7 @@
   [![en](https://img.shields.io/badge/lang-English-blue.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README-en.md) [![zh](https://img.shields.io/badge/lang-中文-red.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README.md)
 
   Spotify音乐流媒体平台的全栈克隆
-
-  [查看Demo](https://spotify-clone-ls8p.onrender.com)
+  <a href='https://spotify-clone-ls8p.onrender.com' target='_blank'>查看Demo</a>
 </div>
 
 *(使用render.com免费版部署，初次加载需要约50s)*
@@ -31,5 +30,5 @@
 - [x] 添加/删除专辑和歌曲
 - [x] 自动读取歌曲元数据
 - [ ] 批量上传
-- [ ] 更新专辑和歌曲
+- [ ] 修改专辑和歌曲
 - [ ] 管理用户信息

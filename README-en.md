@@ -5,8 +5,7 @@
   [![en](https://img.shields.io/badge/lang-English-blue.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README-en.md) [![zh](https://img.shields.io/badge/lang-中文-red.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README.md)
 
   A fullstack Spotify clone
-  
-  [Live Demo](https://spotify-clone-ls8p.onrender.com)
+  <a href='https://spotify-clone-ls8p.onrender.com' target='_blank'>Live Demo</a>
 </div>
 
 *(deployed using render.com free version, need about 50s at first load)*
