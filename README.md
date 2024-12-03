@@ -5,11 +5,13 @@
   [![en](https://img.shields.io/badge/lang-English-blue.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README-en.md) [![zh](https://img.shields.io/badge/lang-中文-red.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README.md)
 
   全站仿Spotify音乐流媒体平台
+
   <a href='https://spotify-clone-ls8p.onrender.com' target='_blank'>查看Demo</a><sup>*</sup><sup>&#8224;</sup>
   
 </div>
 
 <sup>*</sup> 使用<a href='https://render.com/'>Render</a>免费版部署，初次加载需要约50s
+
 <sup>&#8224;</sup> 内容来自<a href='https://pixabay.com/music/'>Pixabay免版税音乐</a>
 
 ## 截图
