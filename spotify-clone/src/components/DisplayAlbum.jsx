@@ -40,7 +40,7 @@ const DisplayAlbum = () => {
             <span className='mx-1 text-sm text-[#ffffffb3]'>•</span>
             <span className='text-sm text-[#ffffffb3]'>{album.year}</span>
             <span className='mx-1 text-sm text-[#ffffffb3]'>•</span>
-            <span className='text-sm text-[#ffffffb3]'>{album.songs.length} songs, {Math.floor(album.duration / 60).toString()} min {Math.floor(album.duration % 60).toString().padStart(2, '0')} sec</span>
+            <span className='text-sm text-[#ffffffb3]'>{album.songs.length} songs, {Math.floor(album.duration / 60).toString()} min {Math.floor(album.duration % 60).toString()} sec</span>
           </div>
         </div>
       </div>

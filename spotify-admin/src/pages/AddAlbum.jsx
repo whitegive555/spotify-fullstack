@@ -1,7 +1,9 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { assets } from '../assets/assets'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import getAverageColor from 'get-average-color'
+import rgbHex from 'rgb-hex'
 
 const AddAlbum = () => {
   const [loading, setLoading] = useState(false)
@@ -10,7 +12,15 @@ const AddAlbum = () => {
   const [artist, setArtist] = useState('')
   const [year, setYear] = useState('')
   const [artwork, setArtwork] = useState(false)
+  const artworkInputRef = useRef()
   const [bgColor, setBgColor] = useState('#121212')
+
+  const loadArtwork = async () => {
+    setArtwork(artworkInputRef.current.files[0])
+    const rgb = await getAverageColor(URL.createObjectURL(artworkInputRef.current.files[0]))
+    setTitle(artworkInputRef.current.files[0].name.slice(0, -4))
+    setBgColor('#'+rgbHex(rgb.r, rgb.g, rgb.b))
+  }
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
@@ -30,6 +40,7 @@ const AddAlbum = () => {
         setArtist('')
         setYear('')
         setArtwork(false)
+        setBgColor('#121212')
       }
       else {
         toast.error('Something went wrong')
@@ -48,7 +59,7 @@ const AddAlbum = () => {
     <form onSubmit={onSubmitHandler} className='flex flex-col items-start gap-8 text-gray-600'>
       <div className='flex flex-col gap-4'>
         <p>Artwork</p>
-        <input onChange={(e) => setArtwork(e.target.files[0])} type='file' id='image' accept='image/*' hidden />
+        <input ref={artworkInputRef} onChange={loadArtwork} type='file' id='image' accept='image/*' hidden />
         <label htmlFor='image'>
           <img className='w-24 cursor-pointer' src={artwork ? URL.createObjectURL(artwork) : assets.upload_area} alt=''/>
         </label>

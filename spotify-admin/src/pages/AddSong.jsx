@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { assets } from '../assets/assets'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -11,6 +11,7 @@ const AddSong = () => {
   const [artist, setArtist] = useState('')
   const [artwork, setArtwork] = useState(false)
   const [audio, setAudio] = useState(false)
+  const audioInputRef = useRef()
 
   const parseMetadata = async (audio) => {
     try {
@@ -20,23 +21,30 @@ const AddSong = () => {
       console.error('Error parsing metadata:', error.message)
     }
   }
+
+  const loadAudio = async () => {
+    setAudio(audioInputRef.current.files[0])
+    const metadata = await parseMetadata(audioInputRef.current.files[0])
+    setTitle(metadata.common.title)
+    setArtist(metadata.common.artist)
+    setArtwork(new File([metadata.common.picture[0].data], metadata.common.title, { type: 'image/jpeg' }))
+  }
   
   const onSubmitHandler = async (e) => {
     e.preventDefault()
     setLoading(true)
     try {
       if(!audio) throw error
-      const metadata = await parseMetadata(audio)
-  
+    
       const songForm = new FormData()
-      songForm.append('title', title != '' ? title : metadata.common.title)
-      songForm.append('artist', artist != '' ? artist : metadata.common.artist)
-      songForm.append('artwork', artwork != false ? artwork : new File([metadata.common.picture[0].data], '25.jpg', { type: 'image/jpeg' }))
+      songForm.append('title', title)
+      songForm.append('artist', artist)
+      songForm.append('artwork', artwork)
       songForm.append('audio', audio)
       const songResponse = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/song/add`, songForm)
 
       if (songResponse.data.success) {
-        toast.success('Song added')
+        toast.success(`Added song: "${title}"`)
         setTitle('')
         setArtist('')
         setArtwork(false)
@@ -62,7 +70,7 @@ const AddSong = () => {
 
         <div className='flex flex-col gap-4'>
           <p>Upload audio</p>
-          <input onChange={(e) => setAudio(e.target.files[0])} type='file' id='audio' accept='audio/*' hidden />
+          <input ref={audioInputRef} onChange={loadAudio} type='file' id='audio' accept='audio/*' hidden />
           <label htmlFor='audio'>
             <img src={audio ? assets.upload_added : assets.upload_song} className='w-24 cursor-pointer' alt=''/>
           </label>
