@@ -4,7 +4,7 @@
 
   [![en](https://img.shields.io/badge/lang-English-blue.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README-en.md) [![zh](https://img.shields.io/badge/lang-中文-red.svg)](https://github.com/zhangwenchili/spotify-fullstack/blob/main/README.md)
 
-  全站仿Spotify音乐流媒体平台
+  全栈仿Spotify音乐流媒体平台
 
   <a href='https://spotify-clone-ls8p.onrender.com' target='_blank'>查看Demo</a><sup>*</sup><sup>&#8224;</sup>
   
