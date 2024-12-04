@@ -24,7 +24,7 @@ Album page
 Functionality
 - [x] Play album
 - [x] Manage play status
-- [ ] Lazy loading on home page
+- [x] Infinite scrolling on home page
 - [ ] Sync queue
 - [ ] Manage library & queue
 - [ ] Playlist

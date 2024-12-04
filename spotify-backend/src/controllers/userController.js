@@ -37,7 +37,6 @@ const getUser = async (req, res) => {
           year: album.year,
           artworkUrl: album.artworkUrl,
           bgColor: album.bgColor,
-          songIds: album.songIds,
           duration: album.duration
         }
       }
@@ -56,7 +55,6 @@ const getUser = async (req, res) => {
           year: album.year,
           artworkUrl: album.artworkUrl,
           bgColor: album.bgColor,
-          songIds: album.songIds,
           duration: album.duration
         }
       }
@@ -72,6 +70,27 @@ const getUser = async (req, res) => {
       albums: albums,
       home: home
     }})
+  }
+  catch (error) {
+    res.json({ success: false })
+  }
+}
+
+const getMoreHomeContent = async (req, res) => {
+  try {
+    const data = await albumModel.aggregate().sample(10)
+    
+    const albums = data.map(item => ({
+      id: item._id.toString(),
+      title: item.title,
+      artist: item.artist,
+      year: item.year,
+      artworkUrl: item.artworkUrl,
+      bgColor: item.bgColor,
+      duration: item.duration
+    }))
+
+    res.json({ success: true, albums: albums })
   }
   catch (error) {
     res.json({ success: false })
@@ -134,4 +153,4 @@ const updateUser = async (req, res) => {
   }
 }
 
-export { addUser, getUser, updateUser }
+export { addUser, getUser, getMoreHomeContent, updateUser }

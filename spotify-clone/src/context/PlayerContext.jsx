@@ -191,7 +191,7 @@ const PlayerContextProvider = (props) => {
   }
 
   const contextValue = {
-    albums, home, queue,
+    albums, home, setHome, queue,
 
     play, pause, playAlbum, songEnd,
     previous, next,
