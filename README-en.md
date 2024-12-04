@@ -36,7 +36,7 @@ UI
 - [x] Responsive seekbar and volume bar
 - [ ] Sticky header in album page
 - [ ] Hover effect on buttons
-- [ ] Right click menu
+- [x] Right click menu
 
 ### Admin panel
 Functionality
