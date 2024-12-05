@@ -5,15 +5,18 @@ import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import PlayerContextProvider from './context/PlayerContext.jsx'
 import ContextMenuContextProvider from './context/ContextMenuContext.jsx'
+import NavContextProvider from './context/NavContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <ContextMenuContextProvider>
-        <PlayerContextProvider>
-          <App />
-        </PlayerContextProvider>
-      </ContextMenuContextProvider>  
+      <NavContextProvider>
+        <ContextMenuContextProvider>
+          <PlayerContextProvider>
+            <App />
+          </PlayerContextProvider>
+        </ContextMenuContextProvider>  
+      </NavContextProvider>
     </BrowserRouter>
   </StrictMode>,
 )

@@ -1,6 +1,7 @@
 import React, { useContext, useRef, useState, useCallback, useEffect } from 'react'
 import AlbumItem from './AlbumItem'
 import { PlayerContext } from '../context/PlayerContext'
+import { NavContext } from '../context/NavContext'
 import axios from 'axios'
 
 const DisplayHome = () => {
@@ -11,6 +12,8 @@ const DisplayHome = () => {
   const [page, setPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const observer = useRef()
+
+  const { setAtHome } = useContext(NavContext)
 
   const lastPostElementRef = useCallback(
     (node) => {
@@ -26,6 +29,10 @@ const DisplayHome = () => {
       if(node) observer.current.observe(node)
     },
   [loading])
+
+  useEffect(() => {
+    setAtHome(true)
+  }, [])
 
   useEffect(() => {(async () => {
     setLoading(true)

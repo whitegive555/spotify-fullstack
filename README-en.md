@@ -36,7 +36,7 @@ UI
 - [x] Responsive seekbar and volume bar
 - [x] Optimize images using Cloudinary
 - [ ] Sticky header in album page
-- [ ] Hover effect on buttons
+- [x] Hover effect on buttons
 - [x] Right click menu
 
 ### Admin panel
