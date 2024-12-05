@@ -19,7 +19,7 @@ const RightSidebar = () => {
           <div>
             <h2 className='text-white font-bold pt-1 pb-[6px]'>Now playing</h2>
             <div className='flex gap-3 p-2 pl-0'>
-              <img className='w-12 h-12 rounded-[4px]' src={playingSong.artworkUrl} alt=''/>
+              <img className='w-12 h-12 rounded-[4px]' src={playingSong.artworkUrl.slice(0, playingSong.artworkUrl.indexOf('upload/')+'upload/'.length) + 'f_auto,q_auto/' + playingSong.artworkUrl.slice(playingSong.artworkUrl.indexOf('upload/')+'upload/'.length)} alt=''/>
               <div>
                 <p className='text-[#1ed760]'>{playingSong.title}</p>
                 <div className='h-[2px]'></div>
@@ -37,7 +37,7 @@ const RightSidebar = () => {
                 return null
               return(
                 <div key={index} className='flex gap-3 p-2 pl-0'>
-                  <img className='w-12 h-12 rounded-[4px]' src={item.artworkUrl} alt=''/>
+                  <img className='w-12 h-12 rounded-[4px]' src={item.artworkUrl.slice(0, item.artworkUrl.indexOf('upload/')+'upload/'.length) + 'f_auto,q_auto/' + item.artworkUrl.slice(item.artworkUrl.indexOf('upload/')+'upload/'.length)} alt=''/>
                   <div>
                     <p className='text-white'>{item.title}</p>
                     <div className='h-[2px]'></div>

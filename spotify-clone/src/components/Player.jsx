@@ -12,7 +12,7 @@ const Player = () => {
       {/* ------------- left ------------- */}
       { playingSong ?
       <div className='hidden lg:flex items-center gap-4 pl-2 absolute left-0'>
-        <img className='w-14 rounded' src={playingSong.artworkUrl} alt=''/>
+        <img className='w-14 rounded' src={playingSong.artworkUrl.slice(0, playingSong.artworkUrl.indexOf('upload/')+'upload/'.length) + 'f_auto,q_auto/' + playingSong.artworkUrl.slice(playingSong.artworkUrl.indexOf('upload/')+'upload/'.length)} alt=''/>
         <div>
           <p className='text-sm'>{playingSong.title}</p>
           <p className='text-xs text-[#b3b3b3]'>{playingSong.artist}</p>

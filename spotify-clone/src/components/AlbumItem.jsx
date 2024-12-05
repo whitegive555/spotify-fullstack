@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { forwardRef } from 'react'
 import { ContextMenuContext } from '../context/ContextMenuContext'
@@ -9,7 +9,8 @@ const AlbumItem = forwardRef(({ id, title, artist, artworkUrl}, ref) => {
 
   return (
     <div ref={ref} className='min-w-[184px] max-w-[184px] p-3 cursor-pointer rounded-[6px] hover:bg-[#1f1f1f]' onClick={() => navigate(`/album/${id}`)} onContextMenu={rightClickItem}>
-      <img className='rounded-[6px] w-full block' src={artworkUrl} alt=''/>
+      {/* <img className='rounded-[6px] w-full block' src={artworkUrl} alt=''/> */}
+      <img className='rounded-[6px] w-full block' src={artworkUrl.slice(0, artworkUrl.indexOf('upload/')+'upload/'.length) + 'f_auto,q_auto/' + artworkUrl.slice(artworkUrl.indexOf('upload/')+'upload/'.length)} alt=''/>
       <a className='text-white truncate block pt-2 pb-1'>{title}</a>
       <a className='text-[#b3b3b3] text-sm truncate block'>{artist}</a>
     </div>

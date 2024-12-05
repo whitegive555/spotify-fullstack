@@ -43,7 +43,7 @@ const LeftSidebar = () => {
         (
           <div key={index} className='flex flex-col justify-between items-center gap-4 p-2 rounded-lg cursor-pointer hover:bg-[#1f1f1f]' onClick={() => navigate(`/album/${item.id}`)}>
             <div className='h-12 w-full flex justify-start items-center gap-3'>
-              <img src={item.artworkUrl} className='h-12 w-12 rounded-md' alt=''/>
+              <img src={item.artworkUrl.slice(0, item.artworkUrl.indexOf('upload/')+'upload/'.length) + 'f_auto,q_auto/' + item.artworkUrl.slice(item.artworkUrl.indexOf('upload/')+'upload/'.length)} className='h-12 w-12 rounded-md' alt=''/>
               <div className='w-[188px] h-12'>
                 <p className='text-white overflow-ellipsis text-nowrap'>{item.title}</p>
                 <p className='text-[#b3b3b3] text-sm'>{item.artist}</p>

@@ -24,7 +24,7 @@ const App = () => {
         <Player />
         <ContextMenu isActive={contextMenuStatus.isActive} position={contextMenuStatus.position} />
       </div>
-      <audio ref={audioRef} src={playingSong ? playingSong.audioUrl : ''} onEnded={songEnd} preload='auto'></audio>
+      <audio ref={audioRef} src={playingSong ? playingSong.audioUrl: ''} onEnded={songEnd} preload='auto'></audio>
     </>
   )
 }
